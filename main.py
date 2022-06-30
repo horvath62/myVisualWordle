@@ -2,7 +2,7 @@
 
 import tkinter as tk
 #from tkinter import ttk
-
+from myClass import *
 
 def b11callback():
     print("b11callback:")
