@@ -1,36 +1,71 @@
 
 
-#https://stackoverflow.com/questions/18471886/how-to-create-an-array-of-multiple-tkinter-scale-widgets-with-python
-
-
-
 import tkinter as tk
-from tkinter import ttk
+#from tkinter import ttk
+
+
+def b11callback():
+    print("b11callback:")
+    b11bg = button11.cget('bg')
+    if b11bg == "green":
+        button11.config(bg="red")
+    else:
+        button11.config(bg="green")
+
+    button11.focus_set()
+
+
+def btncallback(r,c):
+    bgcolor = btn[r][c].cget('bg')
+    if bgcolor == "green":
+        btn[r][c].config(bg="red")
+    #btn[r][c].config(bg='red')
+    print("btncallback:",r,c, bgcolor)
+
+
+
+
+def keydown(e):
+    print("keydown:",e.char)
+    focus_widget = ws.focus_get()
+    #focus_widget.config(bg='white')
+    #focus_widget.config(text=e.char)
+    print(focus_widget.cget('bg'))
+    button11.config(text=e.char)
+
+def keyup(e):
+    print("keyup:",e.char)
+
+def focus(event):
+    widget = ws.focus_get()
+    print("focus:", widget, " has focus")
+
 
 ws = tk.Tk()
 ws.title("Wordle Helper")
 ws.resizable(False,False)
 ws.geometry('800x800')
-ws.configbg=('#88F04')
+ws.configure(bg='gray')
+ws.bind("<KeyPress>", keydown)
+ws.bind("<KeyRelease>", keyup)
 
-char11 = tk.StringVar()
-char12 = tk.StringVar()
+ws.bind_all("<Button-1>", lambda e: focus(e))
 
-char11.set("A")
-char12.set("B")
+button11 = tk.Button(ws, text = "X", command = b11callback, font=('calibre',20,'bold'),justify='center', width=2,bg='green'  )
+button12 = tk.Button(ws, text = "X", command = b11callback, font=('calibre',20,'bold'),justify='center', width=2,bg='green'  )
 
+button11.grid(row=7, column=1)
+button12.grid(row=7, column=2)
 
-box11 = ttk.Entry(ws, textvariable=char11, font=('calibre',20,'bold'), justify='center', width=2, foreground='green' ).place(x=5, y=5)
-box12 = ttk.Entry(ws, textvariable=char12).place(x=50, y=50)
-#box11.pack(expand=True)
-#box11.insert('end', message)
+rows=6
+cols=5
+btn = [[0 for x in range(cols)] for y in range(rows)]
+for r in range(rows):
+    for c in range(cols):
+        btn[r][c] = tk.Button(ws, text=c, command=lambda r=r, c=c : btncallback(r,c), font=('calibre',20,'bold'),justify='center', width=2,bg='green')
+        btn[r][c].grid(row=r, column=c)
 
-
-
-#box11 = ttk
-
-
-
-
+r = 1
+c = 1
 
 ws.mainloop()
