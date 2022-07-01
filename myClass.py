@@ -112,6 +112,27 @@ class Wordlist:
 
       return validwords
 
+class LetterCell:
+    def __init__(self, row, col, letter):
+        self.row = row
+        self.col = col
+        self.letter = letter
+        self.color = 'black'
+
+    def nextcolor(self):
+        if self.color == 'black':
+            self.color = 'yellow'
+        elif self.color == 'yellow':
+            self.color = 'green'
+        elif self.color == 'green':
+            self.color = 'red'
+        else:
+            self.color = 'black'
+
+        return self.color
+
+    def setletter(self, letter):
+        self.letter = letter
 
 
 
