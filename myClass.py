@@ -117,17 +117,17 @@ class LetterCell:
         self.row = row
         self.col = col
         self.letter = letter
-        self.color = 'black'
+        self.color = 'B'
 
     def nextcolor(self):
-        if self.color == 'black':
-            self.color = 'yellow'
-        elif self.color == 'yellow':
-            self.color = 'green'
-        elif self.color == 'green':
-            self.color = 'red'
+        if self.color == 'B':
+            self.color = 'Y'
+        elif self.color == 'Y':
+            self.color = 'G'
+        elif self.color == 'G':
+            self.color = 'R'
         else:
-            self.color = 'black'
+            self.color = 'B'
 
         return self.color
 
@@ -138,7 +138,42 @@ class LetterCell:
 
 
 
+class Criteria:
+    def __init__(self):
+        self.letterlocation = {}  #dict(key=letter) of list (location)
+        self.lettercount = {}     #dict(key=letter) of int(number of occurances)
+        self.letterexclusive = {}      #dict(key=letter) of true/false(exact number of occurance "T" or more "F")
+        # a:[1,3,5], 2 or more
+        # b:[2,4], 1 exactly
+        # c:[null], 0 only
 
+    def addword(self,word,color):
+        # intermediate dict-list
+        locationlist = {}
+        colorlist = {}
+        for location, letter in enumerate(word, start=1):
+            print(word[letter],color[letter])
+            #if color[letter] ==
+            locationlist[letter].append(location)
+            colorlist[letter].append(color)
+        print(locationlist)
+        print(colorlist)
+
+
+
+# COLOR MAPPING
+def cmap(colorcode):
+   if colorcode == 'B':
+       c = '#000000'
+   elif colorcode == 'Y':
+       c = '#CDAD00'
+   elif colorcode == 'G':
+       c = '#228B22'
+   elif colorcode == 'R':
+       c = '#B22222'
+   else:
+       c = '#FF1493'
+   return c
 
 
 

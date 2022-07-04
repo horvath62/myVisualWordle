@@ -5,50 +5,50 @@ import tkinter as tk
 from myClass import *
 
 
-global currentrow
-global currentcol
-
-
-
-def b11callback():
-    print("b11callback:")
-    b11bg = button11.cget('bg')
-    if b11bg == "green":
-        button11.config(bg="red")
-    else:
-        button11.config(bg="green")
-
-    button11.focus_set()
-
-
 def btncallback(r,c):
-    #bgcolor = btn[r][c].cget('bg')
+    global currentcol, currentrow
     bgcolor = cell[r][c].nextcolor()
-    btn[r][c].config(bg=bgcolor)
-
-    #btn[r][c].config(bg='red')
-    print("btncallback:",r,c, bgcolor)
+    btn[r][c].config(bg=cmap(bgcolor))
+    currentcol = c
+    currentrow = r
+    print("btncallback:",r,c, bgcolor, cmap(bgcolor))
 
 def keydown(e):
     print("keydown:",e.char)
-    #focus_widget = ws.focus_get()
-    #focus_widget.config(bg='white')
-    #focus_widget.config(text=e.char)
-    #print(focus_widget.cget('bg'))
-    #button11.config(text=e.char)
 
 def keyup(e):
     global currentcol, currentrow
     print("keyup:",e.char)
-    cell[currentrow][currentcol].setletter(e.char)
-    btn[currentrow][currentcol].config(text=e.char)
-
-    if currentcol < cols-1:
-        currentcol += 1
+    letter = e.char.upper()
+    #print ("upper", letter, ord(letter))
+    if len(letter) == 0:
+        #non character
+        print('NON CHARACTER')
+        if currentcol > 0:
+            cell[currentrow][currentcol-1].setletter('')
+            btn[currentrow][currentcol-1].config(text='')
+            currentcol -= 1
+    elif ord(letter) > 90 or ord(letter) < 65:
+        #not a letter
+        print("NOT A LETTER", len(letter))
     else:
-        currentcol = 0
-        if currentrow < rows - 1:
-            currentrow += 1
+        cell[currentrow][currentcol].setletter(letter)
+        btn[currentrow][currentcol].config(text=letter)
+
+        #scan all words entered
+        for rindex in range(currentrow+1):
+            word = ">>>"
+            for cindex in range(cols):
+                word += cell[rindex][cindex].letter
+            print(currentrow, currentcol, rindex, cindex, word)
+
+        #increment to next cell
+        if currentcol < cols-1:
+            currentcol += 1
+        else:
+            currentcol = 0
+            if currentrow < rows - 1:
+                currentrow += 1
 
 
 def focus(event):
@@ -62,7 +62,6 @@ ws.resizable(False,False)
 ws.geometry('800x800')
 ws.configure(bg='gray')
 #ws.bind("<KeyPress>", keydown)
-#ws.bind("<KeyRelease>", lambda event, arg=3: keyup(event,arg))
 ws.bind("<KeyRelease>", keyup)
 
 ws.bind_all("<Button-1>", lambda e: focus(e))
@@ -79,12 +78,9 @@ for r in range(rows):
     for c in range(cols):
         cell[r][c] = LetterCell(r,c,"")
         btn[r][c] = tk.Button(ws, text=cell[r][c].letter, command=lambda r=r, c=c : btncallback(r,c),
-                              font=('calibre',20,'bold'), fg='white', justify='center', width=2,bg=cell[r][c].color)
+                              font=('calibre',20,'bold'), fg='white', justify='center', width=2,
+                              bg=cmap(cell[r][c].color)
+                              )
         btn[r][c].grid(row=r, column=c)
-
-
-
-r = 1
-c = 1
 
 ws.mainloop()
