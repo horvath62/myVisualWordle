@@ -11,7 +11,9 @@ def button(r,c):
     btn[r][c].config(bg=cmap(bgcolor))
     #currentcol = c
     #currentrow = r
-    print('button: current(',r,',',c,') color:', bgcolor, cmap(bgcolor))
+    #print('button: current(',r,',',c,') color:', bgcolor, cmap(bgcolor))
+
+    scancells()
 
 def keydown(e):
     global currentcol, currentrow
@@ -46,6 +48,9 @@ def keyup(e):
                 currentrow += 1
         print("increment:", "current(", currentrow, ',', currentcol, ')')
 
+    scancells()
+
+    '''
     #scan all words entered
     for rindex in range(rows):
         word = ">>>"
@@ -56,7 +61,7 @@ def keyup(e):
         word += "<<<"
         color += "<<<"
         print(currentrow, currentcol, rindex, cindex, word, color)
-
+    '''
 
 def backspace(e):
     #Note after this routine, the default keyrelease(keyup) will run
@@ -72,6 +77,20 @@ def backspace(e):
 def focus(event):
     widget = ws.focus_get()
     print("focus:", widget, " has focus")
+
+
+def scancells():
+    for rindex in range(rows):
+        word = ">>>"
+        color = ">>>"
+        for cindex in range(cols):
+            word += cell[rindex][cindex].letter
+            color += cell[rindex][cindex].color
+        word += "<<<"
+        color += "<<<"
+        print(currentrow, currentcol, rindex, cindex, word, color)
+
+
 
 
 ws = tk.Tk()
