@@ -138,26 +138,115 @@ class LetterCell:
 
 
 
+
+
 class Criteria:
     def __init__(self):
-        self.letterlocation = {}  #dict(key=letter) of list (location)
-        self.lettercount = {}     #dict(key=letter) of int(number of occurances)
-        self.letterexclusive = {}      #dict(key=letter) of true/false(exact number of occurance "T" or more "F")
-        # a:[1,3,5], 2 or more
-        # b:[2,4], 1 exactly
+        self.letterdata = []  #list of dict of (2 dict and 1 int and 1 value)
+        # a:[G:[1],Y:[3],total:2,exact:N}
+        # b:[G:[],Y:[2,5],total: 1, exact: ######WIP
         # c:[null], 0 only
+        self.rowlist = []   #list(rows) of dict(key=letter) of dict(key=location,value=cell color
 
-    def addword(self,word,color):
-        # intermediate dict-list
-        locationlist = {}
-        colorlist = {}
-        for location, letter in enumerate(word, start=1):
-            print(word[letter],color[letter])
-            #if color[letter] ==
-            locationlist[letter].append(location)
-            colorlist[letter].append(color)
-        print(locationlist)
-        print(colorlist)
+    def scanwords(self, rows, cols, cell):
+        # list of row data
+        self.rowlist = []
+
+        for r in range(rows):
+            # Row data is dict-dict
+            # { A : { 0:G , 2:Y } , B : { 1:B } }
+            # A in pos 0 is green and in pos 2 is yellow. B in pos 1 is black
+            letterdict = {}
+            for c in range(cols):
+                letter = cell[r][c].letter
+                color = cell[r][c].color
+                if letter in letterdict:
+                    letterdict[letter].update({c:color})
+                else:
+                    tempdict = {c:color}
+                    letterdict[letter] = {c:color}
+            self.rowlist.append(letterdict.copy())
+            letterdict.clear()
+        #print(self.rowlist)
+
+
+
+    def printrowlist(self):
+        for rowdata in self.rowlist:
+            print("ROW:",end='')
+            for letterkey in rowdata:
+                print("<",letterkey,">  ",end='',sep='')
+                tempdict = rowdata[letterkey]
+                for loc in tempdict:
+
+                    print(loc,":",tempdict[loc]," ",end='',sep='')
+            print()
+        print()
+
+
+    def printrow(self,rowindex):
+        print("ROW:",end='')
+        rowdata = self.rowlist[rowindex]
+        for letterkey in rowdata:
+            print("<",letterkey,">  ",end='',sep='')
+            tempdict = rowdata[letterkey]
+            for loc in tempdict:
+                print(loc,":",tempdict[loc]," ",end='',sep='')
+        print()
+
+
+
+    def makecriteria(self,rowindex):
+        lettercrit={}
+        # A: { hit:[1] not:[3] tot:2 exact:N }
+        # B: { hit:[]  not:[25] tot:1 exact:Y }
+        # C: { hit:[]  not:[4]  tot:1 exact:N }
+        rowdata = self.rowlist[rowindex]
+        print("### Rowdata:",rowdata)
+        for letterkey in rowdata:
+            if letterkey == " ":
+                lettercrit[letterkey]={}
+            else:
+                print("# Letterkey:",letterkey)
+                letterdict = rowdata[letterkey]
+                # letterdict i.e: { 0:G , 1:B, 2:Y }
+                letterhit = []     # list of in this location(lockey) GREEN cell
+                letternot = []     # list of not in this location YELLOW/BLACK
+                lettertot = 0      # total of GREEN and YELLOW cells
+                letterexact = "N"  # exactly total or equal to or more than lettertotal
+                for lockey in letterdict:
+                    if letterdict[lockey] == "G":
+                        letterhit.append(lockey)
+                        lettertot += 1
+                    elif letterdict[lockey] == "Y":
+                        letternot.append(lockey)
+                        lettertot += 1
+                    else:  # == "B"
+                        letternot.append(lockey)
+                        letterexact = "Y"
+                tempdict={}
+                tempdict['hit']=letterhit
+                tempdict['not']=letternot
+                tempdict['tot']=lettertot
+                tempdict['exact']=letterexact
+                # print("tempdict",tempdict)
+                lettercrit[letterkey]=tempdict.copy()
+                print(lettercrit[letterkey])
+        self.letterdata.append(lettercrit)
+
+
+def printcells(rows,cols,cell):
+    for rindex in range(rows):
+        word = ">>>"
+        color = ">>>"
+        for cindex in range(cols):
+            word += cell[rindex][cindex].letter
+            color += cell[rindex][cindex].color
+        word += "<<<"
+        color += "<<<"
+        print(word, color)
+
+
 
 
 

@@ -13,7 +13,12 @@ def button(r,c):
     #currentrow = r
     #print('button: current(',r,',',c,') color:', bgcolor, cmap(bgcolor))
 
-    scancells()
+    #printcells(rows,cols,cell)
+
+    #crit.scanwords(rows,cols,cell)
+    #crit.printrowlist()
+    #crit.printrow(0)
+    #crit.makecriteria(0)
 
 def keydown(e):
     global currentcol, currentrow
@@ -23,15 +28,15 @@ def keyup(e):
     global currentcol, currentrow
     print("keyup:","current(",currentrow,',',currentcol,')',e.char)
     letter = e.char.upper()
-    #print ("upper", letter, ord(letter))
+    # print ("upper", letter, ord(letter))
     if len(letter) == 0:
-        #non character
+        # non character
         print("non-character: current(", currentrow, ',', currentcol, ')')
         cell[currentrow][currentcol].setletter(' ')
         btn[currentrow][currentcol].config(text=' ')
 
     elif ord(letter) > 90 or ord(letter) < 65:
-        #not a letter
+        # not a letter
         print("NOT A LETTER: current(", currentrow, ',', currentcol, ')', letter)
         cell[currentrow][currentcol].setletter(' ')
         btn[currentrow][currentcol].config(text=' ')
@@ -39,7 +44,7 @@ def keyup(e):
         cell[currentrow][currentcol].setletter(letter)
         btn[currentrow][currentcol].config(text=letter)
 
-        #increment to next cell
+        # increment to next cell
         if currentcol < cols-1:
             currentcol += 1
         else:
@@ -48,23 +53,21 @@ def keyup(e):
                 currentrow += 1
         print("increment:", "current(", currentrow, ',', currentcol, ')')
 
-    scancells()
+    # printcells(rows,cols,cell)
+    crit.scanwords(rows,cols,cell)
+    crit.printrowlist()
+    # for index, rowdata in enumerate(crit.rowlist):
+    #    crit.printrow(index)
 
-    '''
-    #scan all words entered
-    for rindex in range(rows):
-        word = ">>>"
-        color = ">>>"
-        for cindex in range(cols):
-            word += cell[rindex][cindex].letter
-            color += cell[rindex][cindex].color
-        word += "<<<"
-        color += "<<<"
-        print(currentrow, currentcol, rindex, cindex, word, color)
-    '''
+    crit.letterdata = []
+    for index, rowdata in enumerate(crit.rowlist):
+        crit.makecriteria(index)
+        print(crit.letterdata[index])
+    print("CRIT:",crit.letterdata)
+
 
 def backspace(e):
-    #Note after this routine, the default keyrelease(keyup) will run
+    # Note after this routine, the default keyrelease(keyup) will run
     global currentcol, currentrow
     print("backspace: current(",currentrow,',',currentcol,')')
     if currentcol > 0:
@@ -121,5 +124,8 @@ for r in range(rows):
                               bg=cmap(cell[r][c].color)
                               )
         btn[r][c].grid(row=r, column=c)
+
+
+crit = Criteria()
 
 ws.mainloop()
