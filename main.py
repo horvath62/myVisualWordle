@@ -59,11 +59,19 @@ def keyup(e):
     # for index, rowdata in enumerate(crit.rowlist):
     #    crit.printrow(index)
 
+    '''
     crit.letterdata = []
     for index, rowdata in enumerate(crit.rowlist):
         crit.makecriteria(index)
         print(crit.letterdata[index])
     print("CRIT:",crit.letterdata)
+    '''
+
+    crit.makecriteria()
+    sidelabel.config(text=crit.showcriteria())
+    print("CRIT:",crit.rowcrit)
+    crit.mergecriteria()
+
 
 
 def backspace(e):
@@ -124,6 +132,16 @@ for r in range(rows):
                               bg=cmap(cell[r][c].color)
                               )
         btn[r][c].grid(row=r, column=c)
+
+#tbox = tk.Text(ws, width=100, bd=0,  )
+#tbox.grid(row=0,column=cols+1, rowspan=rows)
+
+sidelabel = tk.Label(ws, text="asdf",width=70, height=20, bd=0,
+                     font=('calibre',10,'bold'),justify='left', anchor="nw" )
+sidelabel.grid(row=0,column=cols+1, rowspan=rows)
+
+bottomlabel = tk.Label(ws, text="asdf",width=100, height=35, bd=0, font=('calibre',10,'bold'),justify='left'  )
+bottomlabel.grid(row=rows, column=0, columnspan=cols+2)
 
 
 crit = Criteria()

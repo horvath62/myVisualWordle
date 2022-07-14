@@ -135,18 +135,17 @@ class LetterCell:
         self.letter = letter
 
 
-
-
-
-
-
 class Criteria:
     def __init__(self):
-        self.letterdata = []  #list of dict of (2 dict and 1 int and 1 value)
+        self.rowlist = []          # list(rows) of dict(key=letter) of dict(key=location,value=cell color
+        # gets converted to...
+        self.rowcrit = []          # list(rows) of dict(key=letter) of dict(key=hit,miss,etc.(2 dict and 1 int and 2 chars)
+        # which gets merged into a single criteria
+        self.mergecrit = {}       #                dict(key=letter) of dict(key=hit,miss,etc.(2 dict and 1 int and 2 chars)
         # a:[G:[1],Y:[3],total:2,exact:N}
         # b:[G:[],Y:[2,5],total: 1, exact: ######WIP
         # c:[null], 0 only
-        self.rowlist = []   #list(rows) of dict(key=letter) of dict(key=location,value=cell color
+
 
     def scanwords(self, rows, cols, cell):
         # list of row data
@@ -196,43 +195,93 @@ class Criteria:
 
 
 
-    def makecriteria(self,rowindex):
-        lettercrit={}
-        # A: { hit:[1] not:[3] tot:2 exact:N }
-        # B: { hit:[]  not:[25] tot:1 exact:Y }
-        # C: { hit:[]  not:[4]  tot:1 exact:N }
-        rowdata = self.rowlist[rowindex]
-        print("### Rowdata:",rowdata)
-        for letterkey in rowdata:
-            if letterkey == " ":
-                lettercrit[letterkey]={}
-            else:
-                print("# Letterkey:",letterkey)
-                letterdict = rowdata[letterkey]
-                # letterdict i.e: { 0:G , 1:B, 2:Y }
-                letterhit = []     # list of in this location(lockey) GREEN cell
-                letternot = []     # list of not in this location YELLOW/BLACK
-                lettertot = 0      # total of GREEN and YELLOW cells
-                letterexact = "N"  # exactly total or equal to or more than lettertotal
-                for lockey in letterdict:
-                    if letterdict[lockey] == "G":
-                        letterhit.append(lockey)
-                        lettertot += 1
-                    elif letterdict[lockey] == "Y":
-                        letternot.append(lockey)
-                        lettertot += 1
-                    else:  # == "B"
-                        letternot.append(lockey)
-                        letterexact = "Y"
-                tempdict={}
-                tempdict['hit']=letterhit
-                tempdict['not']=letternot
-                tempdict['tot']=lettertot
-                tempdict['exact']=letterexact
-                # print("tempdict",tempdict)
-                lettercrit[letterkey]=tempdict.copy()
-                print(lettercrit[letterkey])
-        self.letterdata.append(lettercrit)
+    def makecriteria(self):
+        self.rowcrit = []
+        for index, rowdata in enumerate(self.rowlist):
+
+            lettercrit={}   # {'A': {'hit': [0], 'miss': [2], 'tot': 2, 'exact': 'N'}
+            # A: { hit:[1] miss:[3] tot:2 exact:N }
+            # B: { hit:[]  miss:[25] tot:1 exact:Y }
+            # C: { hit:[]  miss:[4]  tot:1 exact:N }
+            print("### Rowdata:",rowdata)
+            for letterkey in rowdata:
+                if letterkey == " ":
+                    lettercrit[letterkey]={}
+                else:
+                    print("# Letterkey:",letterkey)
+                    letterdict = rowdata[letterkey]
+                    # letterdict i.e: { 0:G , 1:B, 2:Y }
+                    letterhit = []     # list of in this location(lockey) GREEN cell
+                    lettermiss = []     # list of miss in this location YELLOW/BLACK
+                    lettertot = 0      # total of GREEN and YELLOW cells
+                    letterexact = "N"  # exactly total or equal to or more than lettertotal
+                    letterany = "N"    # letter could be in any location
+                    for lockey in letterdict:
+                        if letterdict[lockey] == "G":
+                            letterhit.append(lockey)
+                            lettertot += 1
+                        elif letterdict[lockey] == "Y":
+                            lettermiss.append(lockey)
+                            lettertot += 1
+                        elif letterdict[lockey] == "B":
+                            lettermiss.append(lockey)
+                            letterexact = "Y"
+                        elif letterdict[lockey] == "R":
+                            lettertot += 1
+                            letterany = "Y"
+                        else:   # letterkey[lockey] == (space)
+                            pass
+                    tempdict={}
+                    tempdict['hit']=letterhit
+                    tempdict['miss']=lettermiss
+                    tempdict['tot']=lettertot
+                    tempdict['exact']=letterexact
+                    tempdict['any']=letterany
+                    lettercrit[letterkey]=tempdict.copy()
+            self.rowcrit.append(lettercrit.copy())
+
+    def mergecriteria(self):
+        for row in self.rowcrit:
+            mergeletters = list(set(list(self.mergecrit)+list(row)))
+            print("merge:",mergeletters)
+
+            self.mergecrit={}
+            for letterkey in mergeletters:
+                self.mergecrit[letterkey]={}
+
+            '''
+            for letterkey in row:
+                mcrit = self.mergecrit[letterkey]
+                rcrit = row[letterkey]
+                print("letterkey:",letterkey,"row", rcrit)
+                if letterkey in self.mergecrit:
+                    mergehit = list(set(mcrit["hit"]+rcrit["hit"]))
+
+
+                    mergehit = self.mergecrit[letterkey]
+                    mergemiss = self.mergecrit[letterkey]
+                    mergetot = self.mergecrit[letterkey]
+                    mergeexact = self.mergecrit[letterkey]
+                    mergeany =self.mergecrit[letterkey]
+                    rowhit = self.rowcrit[letterkey]
+                    rowmiss = self.rowcrit[letterkey]
+                    rowtot = self.rowcrit[letterkey]
+                    rowexact = self.rowcrit[letterkey]
+                    rowany =self.mergecrit[letterkey]
+            '''
+
+    def showcriteria(self):
+        templabel=""
+        for row in self.rowcrit:
+            for letterkey in row:
+                templabel += letterkey + "  "
+                thingdict = row[letterkey]
+                for thingkey in thingdict:
+                    templabel += thingkey +":"+ str(thingdict[thingkey]) + "\t"
+                templabel += "\n"
+        templabel += "\n"
+
+        return templabel
 
 
 def printcells(rows,cols,cell):
