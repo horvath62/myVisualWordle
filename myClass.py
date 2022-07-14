@@ -161,7 +161,7 @@ class Criteria:
                 color = cell[r][c].color
                 if letter in letterdict:
                     letterdict[letter].update({c:color})
-                if letter == " ":
+                elif letter == " ":
                     pass
                 else:
                     letterdict[letter] = {c:color}
