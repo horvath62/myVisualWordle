@@ -59,18 +59,9 @@ def keyup(e):
     # for index, rowdata in enumerate(crit.rowlist):
     #    crit.printrow(index)
 
-    '''
-    crit.letterdata = []
-    for index, rowdata in enumerate(crit.rowlist):
-        crit.makecriteria(index)
-        print(crit.letterdata[index])
-    print("CRIT:",crit.letterdata)
-    '''
-
     crit.makecriteria()
-    sidelabel.config(text=crit.showcriteria())
-    print("CRIT:",crit.rowcrit)
     crit.mergecriteria()
+    sidelabel.config(text=crit.showcriteria())
 
 
 

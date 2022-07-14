@@ -145,6 +145,7 @@ class Criteria:
         # a:[G:[1],Y:[3],total:2,exact:N}
         # b:[G:[],Y:[2,5],total: 1, exact: ######WIP
         # c:[null], 0 only
+        self.mergeerrors = ''
 
 
     def scanwords(self, rows, cols, cell):
@@ -243,34 +244,34 @@ class Criteria:
             self.rowcrit.append(lettercrit.copy())
 
     def mergecriteria(self):
+        self.mergecrit={}
+        self.mergeerrors
         for row in self.rowcrit:
             mergeletters = list(set(list(self.mergecrit)+list(row)))
-            print("merge:",mergeletters)
-
-            self.mergecrit={}
+            print("merge letters:",mergeletters)
             for letterkey in mergeletters:
-                self.mergecrit[letterkey]={}
+                mcrit = d2d(letterkey, self.mergecrit)
+                rcrit = d2d(letterkey, row)
 
-            '''
-            for letterkey in row:
-                mcrit = self.mergecrit[letterkey]
-                rcrit = row[letterkey]
-                print("letterkey:",letterkey,"row", rcrit)
-                if letterkey in self.mergecrit:
-                    mergehit = list(set(mcrit["hit"]+rcrit["hit"]))
+                print("mcrit",mcrit)
+                print("rcrit",rcrit)
 
+                mhit = list(set(list(d2l('hit',mcrit)+d2l('hit',rcrit))))
+                mmiss = list(set(list(d2l('miss', mcrit)+d2l('miss', rcrit))))
+                mtot = max(d2i('tot',mcrit),d2i('tot',rcrit))
+                if d2s('exact',mcrit) == "Y" or d2s('exact',rcrit) == "Y":
+                    mexact = 'Y'
+                else:
+                    mexact = 'N'
+                if d2s('any',mcrit) == "Y" or d2s('any',rcrit) == "Y":
+                    many = 'Y'
+                else:
+                    many = 'N'
 
-                    mergehit = self.mergecrit[letterkey]
-                    mergemiss = self.mergecrit[letterkey]
-                    mergetot = self.mergecrit[letterkey]
-                    mergeexact = self.mergecrit[letterkey]
-                    mergeany =self.mergecrit[letterkey]
-                    rowhit = self.rowcrit[letterkey]
-                    rowmiss = self.rowcrit[letterkey]
-                    rowtot = self.rowcrit[letterkey]
-                    rowexact = self.rowcrit[letterkey]
-                    rowany =self.mergecrit[letterkey]
-            '''
+                mcrit = {'hit':mhit, 'miss':mmiss, 'tot':mtot, 'exact':mexact, 'any':many}
+                print(' merged:'+str(mcrit))
+                self.mergecrit[letterkey] = mcrit
+                print(' Merged:>>>' + str(self.mergecrit))
 
     def showcriteria(self):
         templabel=""
@@ -281,9 +282,19 @@ class Criteria:
                 for thingkey in thingdict:
                     templabel += thingkey +":"+ str(thingdict[thingkey]) + "\t"
                 templabel += "\n"
-        templabel += "\n"
+        templabel += "\n\n"
 
+        for letterkey in self.mergecrit:
+            templabel += letterkey + "  "
+            thingdict = self.mergecrit[letterkey]
+            for thingkey in thingdict:
+                templabel += thingkey + ":" + str(thingdict[thingkey]) + "\t"
+            templabel += "\n"
         return templabel
+
+    def errorcriteria(self,row,letter,message):
+        self.mergeerrors += 'Row:'+ str(row)+"Letter:"+str(letter)+" "+message
+
 
 
 def printcells(rows,cols,cell):
@@ -297,7 +308,29 @@ def printcells(rows,cols,cell):
         color += "<<<"
         print(word, color)
 
+def d2d(thekey,thedict):
+    rtn = {}
+    if thekey in thedict:
+        rtn = thedict[thekey]
+    return rtn
 
+def d2l(thekey, thedict):
+    rtn = []
+    if thekey in thedict:
+        rtn = thedict[thekey]
+    return rtn
+
+def d2i(thekey, thedict):
+    rtn = 0
+    if thekey in thedict:
+        rtn = thedict[thekey]
+    return rtn
+
+def d2s(thekey, thedict):
+    rtn = 'N'
+    if thekey in thedict:
+        rtn = thedict[thekey]
+    return rtn
 
 
 
