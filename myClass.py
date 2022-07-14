@@ -161,10 +161,12 @@ class Criteria:
                 color = cell[r][c].color
                 if letter in letterdict:
                     letterdict[letter].update({c:color})
+                if letter == " ":
+                    pass
                 else:
-                    tempdict = {c:color}
                     letterdict[letter] = {c:color}
-            self.rowlist.append(letterdict.copy())
+            if len(letterdict) > 0:
+                self.rowlist.append(letterdict.copy())
             letterdict.clear()
         #print(self.rowlist)
 
