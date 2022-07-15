@@ -61,7 +61,8 @@ def keyup(e):
 
     crit.makecriteria()
     crit.mergecriteria()
-    sidelabel.config(text=crit.showcriteria())
+    crit.textcriteria()
+    sidelabel.config(text=crit.strcrit+crit.strerror)
 
 
 

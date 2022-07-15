@@ -145,7 +145,8 @@ class Criteria:
         # a:[G:[1],Y:[3],total:2,exact:N}
         # b:[G:[],Y:[2,5],total: 1, exact: ######WIP
         # c:[null], 0 only
-        self.mergeerrors = ''
+        self.strcrit = ''
+        self.strerror = ''
 
 
     def scanwords(self, rows, cols, cell):
@@ -245,8 +246,7 @@ class Criteria:
 
     def mergecriteria(self):
         self.mergecrit={}
-        self.mergeerrors
-        for row in self.rowcrit:
+        for rowidx, row in enumerate(self.rowcrit, start=1):
             mergeletters = list(set(list(self.mergecrit)+list(row)))
             print("merge letters:",mergeletters)
             for letterkey in mergeletters:
@@ -268,12 +268,18 @@ class Criteria:
                 else:
                     many = 'N'
 
+                # Error checking merge
+                if ((d2s('exact',mcrit) == "Y" and d2i('tot',rcrit)>d2i('tot',mcrit)) or
+                    (d2s('exact',rcrit) == "Y" and d2i('tot',mcrit)>d2i('tot',rcrit))):
+                    self.errorcriteria(rowidx,letterkey,"Inconsistent yellow or green cell count with black cell")
+
+
                 mcrit = {'hit':mhit, 'miss':mmiss, 'tot':mtot, 'exact':mexact, 'any':many}
                 print(' merged:'+str(mcrit))
                 self.mergecrit[letterkey] = mcrit
                 print(' Merged:>>>' + str(self.mergecrit))
 
-    def showcriteria(self):
+    def textcriteria(self):
         templabel=""
         for row in self.rowcrit:
             for letterkey in row:
@@ -290,10 +296,10 @@ class Criteria:
             for thingkey in thingdict:
                 templabel += thingkey + ":" + str(thingdict[thingkey]) + "\t"
             templabel += "\n"
-        return templabel
+        self.strcrit = templabel
 
     def errorcriteria(self,row,letter,message):
-        self.mergeerrors += 'Row:'+ str(row)+"Letter:"+str(letter)+" "+message
+        self.strerror += 'Row:'+ str(row)+" Letter:"+str(letter)+" "+message
 
 
 
