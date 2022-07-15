@@ -128,11 +128,11 @@ for r in range(rows):
 #tbox = tk.Text(ws, width=100, bd=0,  )
 #tbox.grid(row=0,column=cols+1, rowspan=rows)
 
-sidelabel = tk.Label(ws, text="asdf",width=70, height=20, bd=0,
+sidelabel = tk.Label(ws, text="",width=70, height=20, bd=0,
                      font=('calibre',10,'bold'),justify='left', anchor="nw" )
 sidelabel.grid(row=0,column=cols+1, rowspan=rows)
 
-bottomlabel = tk.Label(ws, text="asdf",width=100, height=35, bd=0, font=('calibre',10,'bold'),justify='left'  )
+bottomlabel = tk.Label(ws, text="",width=100, height=35, bd=0, font=('calibre',10,'bold'),justify='left'  )
 bottomlabel.grid(row=rows, column=0, columnspan=cols+2)
 
 

@@ -207,12 +207,11 @@ class Criteria:
             # A: { hit:[1] miss:[3] tot:2 exact:N }
             # B: { hit:[]  miss:[25] tot:1 exact:Y }
             # C: { hit:[]  miss:[4]  tot:1 exact:N }
-            print("### Rowdata:",rowdata)
+            #print("### Rowdata:",rowdata)
             for letterkey in rowdata:
                 if letterkey == " ":
                     lettercrit[letterkey]={}
                 else:
-                    print("# Letterkey:",letterkey)
                     letterdict = rowdata[letterkey]
                     # letterdict i.e: { 0:G , 1:B, 2:Y }
                     letterhit = []     # list of in this location(lockey) GREEN cell
@@ -246,16 +245,15 @@ class Criteria:
 
     def mergecriteria(self):
         self.mergecrit={}
+        self.strerror=''
         for rowidx, row in enumerate(self.rowcrit, start=1):
             mergeletters = list(set(list(self.mergecrit)+list(row)))
-            print("merge letters:",mergeletters)
+            #print("merge letters:",mergeletters)
             for letterkey in mergeletters:
                 mcrit = d2d(letterkey, self.mergecrit)
                 rcrit = d2d(letterkey, row)
 
-                print("mcrit",mcrit)
-                print("rcrit",rcrit)
-
+                # merge row with existing criteria
                 mhit = list(set(list(d2l('hit',mcrit)+d2l('hit',rcrit))))
                 mmiss = list(set(list(d2l('miss', mcrit)+d2l('miss', rcrit))))
                 mtot = max(d2i('tot',mcrit),d2i('tot',rcrit))
@@ -273,11 +271,15 @@ class Criteria:
                     (d2s('exact',rcrit) == "Y" and d2i('tot',mcrit)>d2i('tot',rcrit))):
                     self.errorcriteria(rowidx,letterkey,"Inconsistent yellow or green cell count with black cell")
 
+                if len( set(d2l('hit',mcrit)) & set(d2l('miss',rcrit)) ) > 0:
+                    self.errorcriteria(rowidx, letterkey, "Inconsistent yellow/black versus green cell")
+                if len( set(d2l('hit', rcrit)) & set(d2l('miss', mcrit)) ) > 0:
+                    self.errorcriteria(rowidx, letterkey, "Inconsistent yellow/black versus green cell")
 
+                # write back new merged criteria
                 mcrit = {'hit':mhit, 'miss':mmiss, 'tot':mtot, 'exact':mexact, 'any':many}
-                print(' merged:'+str(mcrit))
                 self.mergecrit[letterkey] = mcrit
-                print(' Merged:>>>' + str(self.mergecrit))
+                #print(' Merged:>>>' + str(self.mergecrit))
 
     def textcriteria(self):
         templabel=""
@@ -299,7 +301,7 @@ class Criteria:
         self.strcrit = templabel
 
     def errorcriteria(self,row,letter,message):
-        self.strerror += 'Row:'+ str(row)+" Letter:"+str(letter)+" "+message
+        self.strerror += 'ERROR: Row:'+str(row)+" Letter:"+str(letter)+" "+message + "\n"
 
 
 
