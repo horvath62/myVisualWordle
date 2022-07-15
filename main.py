@@ -4,6 +4,24 @@ import tkinter as tk
 #from tkinter import ttk
 from myClass import *
 
+# ROWS and COLUMNS (GLOBAL)
+rows=6
+cols=5
+
+wordfile_20k = "fiveletter_20k_trimmed.txt"
+wordfile_71k = "fiveletter_71k.txt"
+
+# Make list of five letter words
+w20k = Wordlist([], "20K WORD FILE")
+w20k.readwordfile(wordfile_20k)
+wr20k = Wordlist([],'Results from 20K wordlist')
+
+w71k = Wordlist([], "71K WORD FILE")
+w71k.readwordfile(wordfile_71k)
+
+crit = Criteria(cols)
+
+
 
 def button(r,c):
     global currentcol, currentrow
@@ -53,17 +71,16 @@ def keyup(e):
                 currentrow += 1
         print("increment:", "current(", currentrow, ',', currentcol, ')')
 
-    # printcells(rows,cols,cell)
+    # CREATE SEARCH CRITERIA
     crit.scanwords(rows,cols,cell)
     crit.printrowlist()
-    # for index, rowdata in enumerate(crit.rowlist):
-    #    crit.printrow(index)
-
     crit.makecriteria()
     crit.mergecriteria()
     crit.textcriteria()
     sidelabel.config(text=crit.strcrit+crit.strerror)
 
+    # APPLY SEARCH CRITERIA TO 20K WORDLIST
+    wr20k.criteriaresults(w20k.words, crit.mergecrit)
 
 
 def backspace(e):
@@ -101,7 +118,7 @@ ws.title("Wordle Helper")
 ws.resizable(False,False)
 ws.geometry('800x800')
 ws.configure(bg='gray')
-#ws.bind("<KeyPress>", keydown)
+# ws.bind("<KeyPress>", keydown)
 ws.bind("<KeyRelease>", keyup)
 ws.bind("<BackSpace>", backspace)
 
@@ -110,9 +127,6 @@ ws.bind_all("<Button-1>", lambda e: focus(e))
 
 currentrow = 0
 currentcol = 0
-
-rows=6
-cols=5
 
 cell = [[0 for x in range(cols)] for y in range(rows)]
 btn = [[0 for x in range(cols)] for y in range(rows)]
@@ -125,9 +139,6 @@ for r in range(rows):
                               )
         btn[r][c].grid(row=r, column=c)
 
-#tbox = tk.Text(ws, width=100, bd=0,  )
-#tbox.grid(row=0,column=cols+1, rowspan=rows)
-
 sidelabel = tk.Label(ws, text="",width=70, height=20, bd=0,
                      font=('calibre',10,'bold'),justify='left', anchor="nw" )
 sidelabel.grid(row=0,column=cols+1, rowspan=rows)
@@ -136,6 +147,5 @@ bottomlabel = tk.Label(ws, text="",width=100, height=35, bd=0, font=('calibre',1
 bottomlabel.grid(row=rows, column=0, columnspan=cols+2)
 
 
-crit = Criteria()
 
 ws.mainloop()

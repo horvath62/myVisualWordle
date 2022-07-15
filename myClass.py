@@ -112,6 +112,31 @@ class Wordlist:
 
       return validwords
 
+  def criteriaresults(self, inputwordlist, criteria):
+      self.words = []
+      for w in inputwordlist:
+          wordtest = True
+          for letter in criteria:
+              lettercount = 0
+              crit = criteria[letter]
+              hitloc = crit['hit']
+              for loc in hitloc:
+                  if w[loc] != letter:
+                      wordtest = False
+              missloc = crit['miss']
+              positiontest = True
+              for loc in missloc:
+                  if w[loc] == letter:
+                      positiontest = False
+
+
+
+
+
+
+
+
+
 class LetterCell:
     def __init__(self, row, col, letter):
         self.row = row
@@ -136,7 +161,7 @@ class LetterCell:
 
 
 class Criteria:
-    def __init__(self):
+    def __init__(self, cols):
         self.rowlist = []          # list(rows) of dict(key=letter) of dict(key=location,value=cell color
         # gets converted to...
         self.rowcrit = []          # list(rows) of dict(key=letter) of dict(key=hit,miss,etc.(2 dict and 1 int and 2 chars)
@@ -147,6 +172,7 @@ class Criteria:
         # c:[null], 0 only
         self.strcrit = ''
         self.strerror = ''
+        self.cols = cols
 
 
     def scanwords(self, rows, cols, cell):
@@ -266,7 +292,7 @@ class Criteria:
                 else:
                     many = 'N'
 
-                # Error checking merge
+                # ##### Error checking merge ######
                 if ((d2s('exact',mcrit) == "Y" and d2i('tot',rcrit)>d2i('tot',mcrit)) or
                     (d2s('exact',rcrit) == "Y" and d2i('tot',mcrit)>d2i('tot',rcrit))):
                     self.errorcriteria(rowidx,letterkey,"Inconsistent yellow or green cell count with black cell")
@@ -276,10 +302,14 @@ class Criteria:
                 if len( set(d2l('hit', rcrit)) & set(d2l('miss', mcrit)) ) > 0:
                     self.errorcriteria(rowidx, letterkey, "Inconsistent yellow/black versus green cell")
 
+                # Error check: total misses plus total is greater than number of available cells
+                if d2i('tot',rcrit)+len(d2l('miss',rcrit)) > self.cols:
+                    self.errorcriteria(rowidx, letterkey, "Not enough cells for condition")
+
                 # write back new merged criteria
                 mcrit = {'hit':mhit, 'miss':mmiss, 'tot':mtot, 'exact':mexact, 'any':many}
                 self.mergecrit[letterkey] = mcrit
-                #print(' Merged:>>>' + str(self.mergecrit))
+                # print(' Merged:>>>' + str(self.mergecrit))
 
     def textcriteria(self):
         templabel=""
@@ -303,7 +333,9 @@ class Criteria:
     def errorcriteria(self,row,letter,message):
         self.strerror += 'ERROR: Row:'+str(row)+" Letter:"+str(letter)+" "+message + "\n"
 
-
+class Search:
+    def __init__(self):
+        self.rowlist = []
 
 def printcells(rows,cols,cell):
     for rindex in range(rows):
