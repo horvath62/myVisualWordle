@@ -59,25 +59,24 @@ class Wordlist:
     def addword(self, word):
         self.words.append(word)
 
-    def printwords(self, numcols, maxwords):
-        print("")
-        print("-------- ", self.title, " ", len(self.words), " words", " --------", end="" )
+    def formatwords(self, numcols, maxwords):
+        rtn = '\n'
+        rtn += "-------- " + str(self.title)+" "+str(len(self.words))+" words --------"
         if len(self.words)>maxwords:
-            print(" showing ", maxwords, " words -----")
+            rtn += " showing "+str(maxwords)+" words -----"+'\n'
         else:
-            print("")
-
-        col=0
+            rtn += '\n'
+        col = 0
         cnt = 0
-
         for w in self.words:
             cnt = cnt + 1
-            print(w, " ", end="")
+            rtn += str(w) + " "
             col = col + 1
             if col % numcols == 0:
-                print("")
+                rtn += '\n'
             if cnt >= maxwords:
                 break
+        return rtn
 
     def searchresults(self, letterlist, letterdict):
 

@@ -84,10 +84,12 @@ def keyup(e):
 
     # APPLY SEARCH CRITERIA TO 20K WORDLIST
     wr20k.criteriaresults(w20k.words, crit.mergecrit)
-    wr20k.printwords(10,100)
-    bottomlabel.config(text=wr20k.words)
-    wr71k.criteriaresults(w20k.words, crit.mergecrit)
-    wr71k.printwords(10,100)
+    text20k = wr20k.formatwords(10,100)
+    wr71k.criteriaresults(w71k.words, crit.mergecrit)
+    wr71k.words = wr71k.uniquewords(wr20k.words)
+    text71k = wr71k.formatwords(10, 100)
+    print(text20k+text71k)
+    bottomlabel.config(text=text20k+text71k)
 
 
 def backspace(e):
@@ -103,7 +105,7 @@ def backspace(e):
 
 def focus(event):
     widget = ws.focus_get()
-    print("focus:", widget, " has focus")
+    # print("focus:", widget, " has focus")
 
 
 def scancells():
