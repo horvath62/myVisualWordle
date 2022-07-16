@@ -19,6 +19,8 @@ wr20k = Wordlist([],'Results from 20K wordlist')
 
 w71k = Wordlist([], "71K WORD FILE")
 w71k.readwordfile(wordfile_71k)
+wr71k = Wordlist([],'Results from 71K wordlist')
+
 
 crit = Criteria(cols)
 
@@ -84,6 +86,8 @@ def keyup(e):
     wr20k.criteriaresults(w20k.words, crit.mergecrit)
     wr20k.printwords(10,100)
     bottomlabel.config(text=wr20k.words)
+    wr71k.criteriaresults(w20k.words, crit.mergecrit)
+    wr71k.printwords(10,100)
 
 
 def backspace(e):
