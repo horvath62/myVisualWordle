@@ -1,140 +1,146 @@
 class Wordlist:
-  def __init__(self, words, title ):
-      self.words = words
-      self.title = title
+    def __init__(self, words, title ):
+        self.words = words
+        self.title = title
 
-  def readwordfile(self, filename):
-      try:
-          with open(filename, "r") as fh:
-              self.words = fh.read().splitlines()
-              fh.close()
-          return 1
-      except IOError:
-          print("IOError: ",filename," File does not appear to exist.")
-          return 0
+    def readwordfile(self, filename):
+        try:
+            with open(filename, "r") as fh:
+                self.words = fh.read().splitlines()
+                fh.close()
+            return 1
+        except IOError:
+            print("IOError: ",filename," File does not appear to exist.")
+            return 0
 
-  def writewordfile(self, filename):
-      try:
-          with open(filename, "w") as fh:
-              fh.writelines('\n'.join(self.words))
-      except:
-          print("Error on open file for write")
+    def writewordfile(self, filename):
+        try:
+            with open(filename, "w") as fh:
+                fh.writelines('\n'.join(self.words))
+        except:
+            print("Error on open file for write")
 
 
-  def makelowercase(self):
-      wordlist = []
-      for w in self.words:
-          wordlist.append(w.lower())
-      return wordlist
+    def makelowercase(self):
+        wordlist = []
+        for w in self.words:
+            wordlist.append(w.lower())
+        return wordlist
 
-  def commonwords(self, wordlist):
-      commonlist = []
-      for w in self.words:
-          for x in wordlist:
-              if w == x:
-                  commonlist.append(w)
-      return commonlist
+    def commonwords(self, wordlist):
+        commonlist = []
+        for w in self.words:
+            for x in wordlist:
+                if w == x:
+                    commonlist.append(w)
+        return commonlist
 
-  def uniquewords(self, wordlist):
-      uniquelist = []
-      for w in self.words:
-          common = False
-          for x in wordlist:
-              if w == x:
-                  common = True
-          if common == False:
-              uniquelist.append(w)
-      return uniquelist
+    def uniquewords(self, wordlist):
+        uniquelist = []
+        for w in self.words:
+            common = False
+            for x in wordlist:
+                if w == x:
+                    common = True
+            if common == False:
+                uniquelist.append(w)
+        return uniquelist
 
-  def trimwords(self, trimlength):
-      trimlist = []
-      for w in self.words:
-          if len(w) == trimlength:
-              trimlist.append(w)
-      return trimlist
+    def trimwords(self, trimlength):
+        trimlist = []
+        for w in self.words:
+            if len(w) == trimlength:
+                trimlist.append(w)
+        return trimlist
 
-  def getWordcount(self):
-      return len(self.words)
+    def getWordcount(self):
+        return len(self.words)
 
-  def addword(self, word):
-      self.words.append(word)
+    def addword(self, word):
+        self.words.append(word)
 
-  def printwords(self, numcols, maxwords):
-      print("")
-      print("-------- ", self.title, " ", len(self.words), " words", " --------", end="" )
-      if len(self.words)>maxwords:
-          print(" showing ", maxwords, " words -----")
-      else:
-          print("")
-
-      col=0
-      cnt = 0
-
-      for w in self.words:
-          cnt = cnt + 1
-          print(w, " ", end="")
-          col = col + 1
-          if col % numcols == 0:
+    def printwords(self, numcols, maxwords):
+        print("")
+        print("-------- ", self.title, " ", len(self.words), " words", " --------", end="" )
+        if len(self.words)>maxwords:
+            print(" showing ", maxwords, " words -----")
+        else:
             print("")
-          if cnt >= maxwords:
-              break
 
-  def searchresults(self, letterlist, letterdict):
+        col=0
+        cnt = 0
 
-      # Search five letter Common Word List for Words meeting criteria
-      validwords = []
-      wordcount = 0
-      for w in self.words:
-          wordtest = True
-          for letter in letterlist:
-              # print("letter:", letter)
-              loclist = letterdict[letter]
+        for w in self.words:
+            cnt = cnt + 1
+            print(w, " ", end="")
+            col = col + 1
+            if col % numcols == 0:
+                print("")
+            if cnt >= maxwords:
+                break
 
-              if loclist[0] == 0:
-                  positiontest = True
-                  for position in range(5):
-                      # print("  position:", position)
-                      if w[position - 1] == letter:
-                          positiontest = False
+    def searchresults(self, letterlist, letterdict):
 
-              else:
-                  positiontest = False
-                  for position in loclist:
-                      if w[position - 1] == letter:
-                          positiontest = True
+        # Search five letter Common Word List for Words meeting criteria
+        validwords = []
+        wordcount = 0
+        for w in self.words:
+            wordtest = True
+            for letter in letterlist:
+                # print("letter:", letter)
+                loclist = letterdict[letter]
 
-              if positiontest == False:
-                  wordtest = False
+                if loclist[0] == 0:
+                    positiontest = True
+                    for position in range(5):
+                        # print("  position:", position)
+                        if w[position - 1] == letter:
+                            positiontest = False
 
-          if wordtest == True:
-              validwords.append(w)
-              wordcount = wordcount + 1
+                else:
+                    positiontest = False
+                    for position in loclist:
+                        if w[position - 1] == letter:
+                            positiontest = True
 
-      return validwords
+                if positiontest == False:
+                    wordtest = False
 
-  def criteriaresults(self, inputwordlist, criteria):
-      self.words = []
-      for w in inputwordlist:
-          wordtest = True
-          for letter in criteria:
-              lettercount = 0
-              crit = criteria[letter]
-              hitloc = crit['hit']
-              for loc in hitloc:
-                  if w[loc] != letter:
-                      wordtest = False
-              missloc = crit['miss']
-              positiontest = True
-              for loc in missloc:
-                  if w[loc] == letter:
-                      positiontest = False
+            if wordtest == True:
+                validwords.append(w)
+                wordcount = wordcount + 1
 
+        return validwords
 
-
-
-
-
-
+    def criteriaresults(self, inputwordlist, criteria):
+        self.words = []
+        for w in inputwordlist:
+            #print('word:',w, end='')
+            wordtest = True
+            for letter in criteria:
+                lettercount = 0
+                crit = criteria[letter]
+                hitloc = crit['hit']
+                #print('hitloc:',hitloc, end='')
+                for loc in hitloc:
+                    #print(' hit ',loc,' ',end='')
+                    if w[loc] != letter.lower():
+                        wordtest = False
+                        #print('False', end='')
+                missloc = crit['miss']
+                #print('missloc',missloc, end='')
+                positiontest = True
+                for loc in missloc:
+                    #print(' miss ',loc,' ',end='')
+                    if w[loc] == letter.lower():
+                        positiontest = False
+                        #print(' False ', end='')
+                if positiontest == False:
+                    wordtest = False
+            if wordtest == True:
+                #print(" append")
+                self.words.append(w)
+            #print('')
 
 
 class LetterCell:

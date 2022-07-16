@@ -9,6 +9,7 @@ rows=6
 cols=5
 
 wordfile_20k = "fiveletter_20k_trimmed.txt"
+# wordfile_20k = "fiveletter_test.txt"
 wordfile_71k = "fiveletter_71k.txt"
 
 # Make list of five letter words
@@ -81,6 +82,8 @@ def keyup(e):
 
     # APPLY SEARCH CRITERIA TO 20K WORDLIST
     wr20k.criteriaresults(w20k.words, crit.mergecrit)
+    wr20k.printwords(10,100)
+    bottomlabel.config(text=wr20k.words)
 
 
 def backspace(e):
@@ -143,7 +146,8 @@ sidelabel = tk.Label(ws, text="",width=70, height=20, bd=0,
                      font=('calibre',10,'bold'),justify='left', anchor="nw" )
 sidelabel.grid(row=0,column=cols+1, rowspan=rows)
 
-bottomlabel = tk.Label(ws, text="",width=100, height=35, bd=0, font=('calibre',10,'bold'),justify='left'  )
+bottomlabel = tk.Label(ws, text="",width=100, height=35, bd=0,
+                       font=('calibre',10,'bold'),justify='left', anchor="nw" )
 bottomlabel.grid(row=rows, column=0, columnspan=cols+2)
 
 
