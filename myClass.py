@@ -115,57 +115,63 @@ class Wordlist:
     def criteriaresults(self, inputwordlist, criteria, cols):
         self.words = []
         for w in inputwordlist:
-            #print('word:',w, end='')
+            # print('word:',w, end='')
             wordtest = True
             for letter in criteria:
                 lettercount = 0
                 crit = criteria[letter]
                 hitloc = crit['hit']
 
-                #print('hitloc:',hitloc, end='')
+                # HITS ( Green )
+                # print('hitloc:',hitloc, end='')
                 for loc in hitloc:
-                    #print(' hit ',loc,' ',end='')
+                    # print(' hit ',loc,' ',end='')
                     if w[loc] != letter.lower():
                         wordtest = False
                         #print('False', end='')
                 missloc = crit['miss']
 
-                #print('missloc',missloc, end='')
+                # MISSES ( Yellow, Black )
+                # print('missloc',missloc, end='')
                 positiontest = True
                 for loc in missloc:
-                    #print(' miss ',loc,' ',end='')
+                    # print(' miss ',loc,' ',end='')
                     if w[loc] == letter.lower():
                         positiontest = False
-                        #print(' False ', end='')
-
+                        # print(' False ', end='')
                 if positiontest == False:
                     wordtest = False
 
+                # LETTER COUNT
                 for loc in range(cols):
                     if w[loc] == letter.lower():
                         lettercount += 1
-                print('lettercount:',w,' ',letter,": ",lettercount)
-
+                # print('lettercount:',w,' ',letter,": ",lettercount)
                 if crit['exact'] == 'Y':
                     if lettercount != crit['tot']:
                         wordtest = False
-                        print('POP exact',crit['tot'])
+                        # print('POP exact',crit['tot'])
                 else:
                     if lettercount > crit['tot']:
                         wordtest = False
-                        print('POP not exact',crit['tot'])
+                        # print('POP not exact',crit['tot'])
 
-                if crit['any'] == 'Y' and crit['exact'] == " Y":
-                    if lettercount == crit['tot']:
-                        wordtest = True
-                        print('POP Any exact')
-
+                # ANY ( RED )
+                if crit['any'] == 'Y':
+                    if crit['exact'] == " Y":
+                        if lettercount != crit['tot']:
+                            wordtest = False
+                            # print('POP Any exact')
+                    else:  # not exact
+                        if lettercount < crit['tot']:
+                            wordtest = False
+                            # print('POP Any')
 
 
             if wordtest == True:
-                print("MATCH:",w, lettercount)
+                # print("MATCH:",w, lettercount)
                 self.words.append(w)
-            #print('')
+            # print('')
 
 
 class LetterCell:

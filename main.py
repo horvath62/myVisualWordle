@@ -8,10 +8,10 @@ from myClass import *
 rows=6
 cols=5
 
-# wordfile_20k = "fiveletter_20k_trimmed.txt"
-wordfile_20k = "fiveletter_test.txt"
-# wordfile_71k = "fiveletter_71k.txt"
-wordfile_71k = "fiveletter_test.txt"
+wordfile_20k = "fiveletter_20k_trimmed.txt"
+# wordfile_20k = "fiveletter_test.txt"
+wordfile_71k = "fiveletter_71k.txt"
+# wordfile_71k = "fiveletter_test.txt"
 
 # Make list of five letter words
 w20k = Wordlist([], "20K WORD FILE")
