@@ -81,6 +81,7 @@ class Wordlist:
     def searchresults(self, letterlist, letterdict):
 
         # Search five letter Common Word List for Words meeting criteria
+        # Deprecated: used in console version
         validwords = []
         wordcount = 0
         for w in self.words:
@@ -111,7 +112,7 @@ class Wordlist:
 
         return validwords
 
-    def criteriaresults(self, inputwordlist, criteria):
+    def criteriaresults(self, inputwordlist, criteria, cols):
         self.words = []
         for w in inputwordlist:
             #print('word:',w, end='')
@@ -120,6 +121,7 @@ class Wordlist:
                 lettercount = 0
                 crit = criteria[letter]
                 hitloc = crit['hit']
+
                 #print('hitloc:',hitloc, end='')
                 for loc in hitloc:
                     #print(' hit ',loc,' ',end='')
@@ -127,6 +129,7 @@ class Wordlist:
                         wordtest = False
                         #print('False', end='')
                 missloc = crit['miss']
+
                 #print('missloc',missloc, end='')
                 positiontest = True
                 for loc in missloc:
@@ -134,10 +137,33 @@ class Wordlist:
                     if w[loc] == letter.lower():
                         positiontest = False
                         #print(' False ', end='')
+
                 if positiontest == False:
                     wordtest = False
+
+                for loc in range(cols):
+                    if w[loc] == letter.lower():
+                        lettercount += 1
+                print('lettercount:',w,' ',letter,": ",lettercount)
+
+                if crit['exact'] == 'Y':
+                    if lettercount != crit['tot']:
+                        wordtest = False
+                        print('POP exact',crit['tot'])
+                else:
+                    if lettercount > crit['tot']:
+                        wordtest = False
+                        print('POP not exact',crit['tot'])
+
+                if crit['any'] == 'Y' and crit['exact'] == " Y":
+                    if lettercount == crit['tot']:
+                        wordtest = True
+                        print('POP Any exact')
+
+
+
             if wordtest == True:
-                #print(" append")
+                print("MATCH:",w, lettercount)
                 self.words.append(w)
             #print('')
 

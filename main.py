@@ -8,9 +8,10 @@ from myClass import *
 rows=6
 cols=5
 
-wordfile_20k = "fiveletter_20k_trimmed.txt"
-# wordfile_20k = "fiveletter_test.txt"
-wordfile_71k = "fiveletter_71k.txt"
+# wordfile_20k = "fiveletter_20k_trimmed.txt"
+wordfile_20k = "fiveletter_test.txt"
+# wordfile_71k = "fiveletter_71k.txt"
+wordfile_71k = "fiveletter_test.txt"
 
 # Make list of five letter words
 w20k = Wordlist([], "20K WORD FILE")
@@ -83,9 +84,9 @@ def keyup(e):
     sidelabel.config(text=crit.strcrit+crit.strerror)
 
     # APPLY SEARCH CRITERIA TO 20K WORDLIST
-    wr20k.criteriaresults(w20k.words, crit.mergecrit)
+    wr20k.criteriaresults(w20k.words, crit.mergecrit, cols)
     text20k = wr20k.formatwords(10,100)
-    wr71k.criteriaresults(w71k.words, crit.mergecrit)
+    wr71k.criteriaresults(w71k.words, crit.mergecrit, cols)
     wr71k.words = wr71k.uniquewords(wr20k.words)
     text71k = wr71k.formatwords(10, 100)
     print(text20k+text71k)
