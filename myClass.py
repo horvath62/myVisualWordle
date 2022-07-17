@@ -128,7 +128,7 @@ class Wordlist:
                     # print(' hit ',loc,' ',end='')
                     if w[loc] != letter.lower():
                         wordtest = False
-                        #print('False', end='')
+                        # print('False', end='')
                 missloc = crit['miss']
 
                 # MISSES ( Yellow, Black )
@@ -311,7 +311,7 @@ class Criteria:
         self.strerror=''
         for rowidx, row in enumerate(self.rowcrit, start=1):
             mergeletters = list(set(list(self.mergecrit)+list(row)))
-            #print("merge letters:",mergeletters)
+            # print("merge letters:",mergeletters)
             for letterkey in mergeletters:
                 mcrit = d2d(letterkey, self.mergecrit)
                 rcrit = d2d(letterkey, row)
@@ -350,6 +350,7 @@ class Criteria:
 
     def textcriteria(self):
         templabel=""
+        '''
         for row in self.rowcrit:
             for letterkey in row:
                 templabel += letterkey + "  "
@@ -358,7 +359,7 @@ class Criteria:
                     templabel += thingkey +":"+ str(thingdict[thingkey]) + "\t"
                 templabel += "\n"
         templabel += "\n\n"
-
+        '''
         for letterkey in self.mergecrit:
             templabel += letterkey + "  "
             thingdict = self.mergecrit[letterkey]

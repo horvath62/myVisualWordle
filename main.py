@@ -44,7 +44,7 @@ def button(r,c):
 
 def keydown(e):
     global currentcol, currentrow
-    print("keydown: current(",currentrow,',',currentcol,')',e.char)
+    # print("keydown: current(",currentrow,',',currentcol,')',e.char)
 
 def keyup(e):
     global currentcol, currentrow
@@ -53,7 +53,7 @@ def keyup(e):
     # print ("upper", letter, ord(letter))
     if len(letter) == 0:
         # non character
-        print("non-character: current(", currentrow, ',', currentcol, ')')
+        print("non-character: current cell:(", currentrow, ',', currentcol, ')')
         cell[currentrow][currentcol].setletter(' ')
         btn[currentrow][currentcol].config(text=' ')
 
@@ -151,10 +151,12 @@ for r in range(rows):
 
 sidelabel = tk.Label(ws, text="",width=70, height=20, bd=0,
                      font=('calibre',10,'bold'),justify='left', anchor="nw" )
+
 sidelabel.grid(row=0,column=cols+1, rowspan=rows)
 
 bottomlabel = tk.Label(ws, text="",width=100, height=35, bd=0,
                        font=('calibre',10,'bold'),justify='left', anchor="nw" )
+
 bottomlabel.grid(row=rows, column=0, columnspan=cols+2)
 
 
