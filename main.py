@@ -75,6 +75,7 @@ def keyup(e):
                 currentrow += 1
         print("increment:", "current(", currentrow, ',', currentcol, ')')
 
+
     # CREATE SEARCH CRITERIA
     crit.scanwords(rows,cols,cell)
     crit.printrowlist()
