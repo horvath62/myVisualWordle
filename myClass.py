@@ -151,8 +151,8 @@ class Wordlist:
                     if lettercount != crit['tot']:
                         wordtest = False
                         # print('POP exact',crit['tot'])
-                else:
-                    if lettercount > crit['tot']:
+                else:         # NOT EXACT
+                    if lettercount < crit['tot']:
                         wordtest = False
                         # print('POP not exact',crit['tot'])
 
