@@ -22,9 +22,7 @@ w71k = Wordlist([], "71K WORD FILE")
 w71k.readwordfile(wordfile_71k)
 wr71k = Wordlist([],'Results from 71K wordlist')
 
-
 crit = Criteria(cols)
-
 
 
 def button(r,c):
@@ -50,19 +48,14 @@ def keyup(e):
     global currentcol, currentrow
     print("keyup:","current(",currentrow,',',currentcol,')',e.char)
     letter = e.char.upper()
-    # print ("upper", letter, ord(letter))
     if len(letter) == 0:
         # non character
         print("non-character: current cell:(", currentrow, ',', currentcol, ')')
         cell[currentrow][currentcol].setletter(' ')
         btn[currentrow][currentcol].config(text=' ')
 
-    elif ord(letter) > 90 or ord(letter) < 65:
-        # not a letter
-        print("NOT A LETTER: current(", currentrow, ',', currentcol, ')', letter)
-        cell[currentrow][currentcol].setletter(' ')
-        btn[currentrow][currentcol].config(text=' ')
-    else:
+    elif (ord(letter) <= 90 and ord(letter) >= 65) or (ord(letter) == 32):
+        # letter or space
         cell[currentrow][currentcol].setletter(letter)
         btn[currentrow][currentcol].config(text=letter)
 
@@ -75,14 +68,18 @@ def keyup(e):
                 currentrow += 1
         print("increment:", "current(", currentrow, ',', currentcol, ')')
 
+    else:
+        # not a letter
+        print("NOT A LETTER: current(", currentrow, ',', currentcol, ')', letter)
+        cell[currentrow][currentcol].setletter(' ')
+        btn[currentrow][currentcol].config(text=' ')
+
 
     # CREATE SEARCH CRITERIA
     crit.scanwords(rows,cols,cell)
     crit.printrowlist()
     crit.makecriteria()
     crit.mergecriteria()
-    crit.textcriteria()
-    sidelabel.config(text=crit.strcrit+crit.strerror)
 
     # APPLY SEARCH CRITERIA TO WORDLISTS
     wr20k.criteriaresults(w20k.words, crit.mergecrit, cols)
@@ -90,13 +87,16 @@ def keyup(e):
     wr71k.criteriaresults(w71k.words, crit.mergecrit, cols)
     wr71k.words = wr71k.uniquewords(wr20k.words)
     text71k = wr71k.formatwords(16, 160)
-    print(text20k+text71k)
+    # print(text20k+text71k)
     bottomlabel.config(text=text20k+text71k)
 
+    # DISPLAY RESULTS
+    # crit.textcriteria()
+    # sidelabel.config(text=crit.strcrit+crit.strerror)
     text20freq = wr20k.letterfrequency(cols)
     sidelabel.config(text=text20freq)
     text20score = wr20k.wordscore(cols)
-    print(text20score)
+    # print(text20score)
     side2label.config(text=text20score)
 
 

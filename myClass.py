@@ -105,7 +105,6 @@ class Wordlist:
                 rtn += "{:4.0f}".format(self.letterlocstat[letter][loc]) + " "
             rtn += "\n"
         rtn += "\n"
-        # print(rtn)
         return rtn
 
     def wordscore(self, cols):
@@ -115,16 +114,12 @@ class Wordlist:
             self.score[word] = 0
             for loc in range(cols):
                 self.score[word] += self.letterlocstat[word[loc]][loc]
-        print(self.words)
-        print(self.score)
 
         sorted_score = sorted(self.score, key=self.score.get, reverse=True)
 
-        print(sorted_score)
-
         for word in sorted_score:
             rtn += word + " " + str(self.score[word]) + '\n'
-            print(word,self.score[word])
+            # print(word, self.score[word])
         rtn += '\n'
         return rtn
 
