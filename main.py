@@ -86,10 +86,10 @@ def keyup(e):
 
     # APPLY SEARCH CRITERIA TO WORDLISTS
     wr20k.criteriaresults(w20k.words, crit.mergecrit, cols)
-    text20k = wr20k.formatwords(10,100)
+    text20k = wr20k.formatwords(16,100)
     wr71k.criteriaresults(w71k.words, crit.mergecrit, cols)
     wr71k.words = wr71k.uniquewords(wr20k.words)
-    text71k = wr71k.formatwords(10, 100)
+    text71k = wr71k.formatwords(16, 100)
     print(text20k+text71k)
     bottomlabel.config(text=text20k+text71k)
 
@@ -154,17 +154,17 @@ for r in range(rows):
         btn[r][c].grid(row=r, column=c)
 
 sidelabeltext = 'Wordle Helper Program.\nClick cell to change color'
-sidelabel = tk.Label(ws, text=sidelabeltext,width=40, height=28, bd=0,
+sidelabel = tk.Label(ws, text=sidelabeltext,width=40, height=28, bd=2,
                      font=('Courier',8,'bold'),justify='left', anchor="nw" )
 sidelabel.grid(row=0,column=cols+1, rowspan=rows)
 
 side2labeltext = 'Word score'
-side2label = tk.Label(ws, text=side2labeltext,width=40, height=28, bd=0,
+side2label = tk.Label(ws, text=side2labeltext,width=40, height=28, bd=2,
                      font=('Courier',8,'bold'),justify='left', anchor="nw" )
 side2label.grid(row=0,column=cols+2, rowspan=rows)
 
 bottomlabeltext = 'Search Results'
-bottomlabel = tk.Label(ws, text=bottomlabeltext,width=90, height=42, bd=0,
+bottomlabel = tk.Label(ws, text=bottomlabeltext,width=100, height=42, bd=2,
                        font=('Courier',10,'bold'),justify='left', anchor="nw" )
 bottomlabel.grid(row=rows, column=0, columnspan=cols+3)
 
