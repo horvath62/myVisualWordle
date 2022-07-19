@@ -99,14 +99,14 @@ class Wordlist:
         sorted_letters = sorted(letterstat, key=letterstat.get, reverse=True)
 
         for letter in sorted_letters:
-            rtn += letter.upper()+" "+"{:5.0f}".format(letterstat[letter])+"   "
+            rtn += " "+letter.upper()+" "+"{:5.0f}".format(letterstat[letter])+"   "
             for loc in range(cols):
                 rtn += "{:4.0f}".format(letterlocstat[letter][loc]) + " "
 
             rtn += "\n"
 
         rtn += "\n"
-        print(rtn)
+        # print(rtn)
         return rtn
 
 

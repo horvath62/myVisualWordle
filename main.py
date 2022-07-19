@@ -153,15 +153,20 @@ for r in range(rows):
                               )
         btn[r][c].grid(row=r, column=c)
 
-sidelabel = tk.Label(ws, text="",width=90, height=28, bd=0,
+sidelabeltext = 'Wordle Helper Program.\nClick cell to change color'
+sidelabel = tk.Label(ws, text=sidelabeltext,width=40, height=28, bd=0,
                      font=('Courier',8,'bold'),justify='left', anchor="nw" )
-
 sidelabel.grid(row=0,column=cols+1, rowspan=rows)
 
-bottomlabel = tk.Label(ws, text="",width=106, height=42, bd=0,
-                       font=('Courier',10,'bold'),justify='left', anchor="nw" )
+side2labeltext = 'Word score'
+side2label = tk.Label(ws, text=side2labeltext,width=40, height=28, bd=0,
+                     font=('Courier',8,'bold'),justify='left', anchor="nw" )
+side2label.grid(row=0,column=cols+2, rowspan=rows)
 
-bottomlabel.grid(row=rows, column=0, columnspan=cols+2)
+bottomlabeltext = 'Search Results'
+bottomlabel = tk.Label(ws, text=bottomlabeltext,width=90, height=42, bd=0,
+                       font=('Courier',10,'bold'),justify='left', anchor="nw" )
+bottomlabel.grid(row=rows, column=0, columnspan=cols+3)
 
 
 
