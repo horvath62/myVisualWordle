@@ -78,6 +78,38 @@ class Wordlist:
                 break
         return rtn
 
+    def statistics(self, cols):
+        rtn = '\n'
+        letterstat = {}
+        letterlocstat = {}
+        letters = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
+        for letter in letters:
+            letterlocstat[letter]={}
+            letterstat[letter] = 0
+            for loc in range(cols):
+                letterlocstat[letter][loc] = 0
+
+        for word in self.words:
+            for loc in range(cols):
+                for letter in letters:
+                    if word[loc] == letter:
+                        letterstat[letter] += 1
+                        letterlocstat[letter][loc] +=1
+
+        sorted_letters = sorted(letterstat, key=letterstat.get, reverse=True)
+
+        for letter in sorted_letters:
+            rtn += letter.upper()+" "+"{:5.0f}".format(letterstat[letter])+"   "
+            for loc in range(cols):
+                rtn += "{:4.0f}".format(letterlocstat[letter][loc]) + " "
+
+            rtn += "\n"
+
+        rtn += "\n"
+        print(rtn)
+        return rtn
+
+
     def searchresults(self, letterlist, letterdict):
 
         # Search five letter Common Word List for Words meeting criteria

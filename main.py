@@ -5,7 +5,7 @@ import tkinter as tk
 from myClass import *
 
 # ROWS and COLUMNS (GLOBAL)
-rows=6
+rows=7
 cols=5
 
 wordfile_20k = "fiveletter_20k_trimmed.txt"
@@ -84,7 +84,7 @@ def keyup(e):
     crit.textcriteria()
     sidelabel.config(text=crit.strcrit+crit.strerror)
 
-    # APPLY SEARCH CRITERIA TO 20K WORDLIST
+    # APPLY SEARCH CRITERIA TO WORDLISTS
     wr20k.criteriaresults(w20k.words, crit.mergecrit, cols)
     text20k = wr20k.formatwords(10,100)
     wr71k.criteriaresults(w71k.words, crit.mergecrit, cols)
@@ -92,6 +92,9 @@ def keyup(e):
     text71k = wr71k.formatwords(10, 100)
     print(text20k+text71k)
     bottomlabel.config(text=text20k+text71k)
+
+    text20stats = wr20k.statistics(cols)
+    sidelabel.config(text=text20stats)
 
 
 def backspace(e):
@@ -150,13 +153,13 @@ for r in range(rows):
                               )
         btn[r][c].grid(row=r, column=c)
 
-sidelabel = tk.Label(ws, text="",width=70, height=20, bd=0,
-                     font=('calibre',10,'bold'),justify='left', anchor="nw" )
+sidelabel = tk.Label(ws, text="",width=90, height=28, bd=0,
+                     font=('Courier',8,'bold'),justify='left', anchor="nw" )
 
 sidelabel.grid(row=0,column=cols+1, rowspan=rows)
 
-bottomlabel = tk.Label(ws, text="",width=100, height=35, bd=0,
-                       font=('calibre',10,'bold'),justify='left', anchor="nw" )
+bottomlabel = tk.Label(ws, text="",width=106, height=42, bd=0,
+                       font=('Courier',10,'bold'),justify='left', anchor="nw" )
 
 bottomlabel.grid(row=rows, column=0, columnspan=cols+2)
 
