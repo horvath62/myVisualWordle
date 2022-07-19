@@ -2,6 +2,9 @@ class Wordlist:
     def __init__(self, words, title ):
         self.words = words
         self.title = title
+        self.letterstat = {}
+        self.letterlocstat = {}
+        self.score = {}
 
     def readwordfile(self, filename):
         try:
@@ -78,37 +81,52 @@ class Wordlist:
                 break
         return rtn
 
-    def statistics(self, cols):
-        rtn = '\n'
-        letterstat = {}
-        letterlocstat = {}
+    def letterfrequency(self, cols):
         letters = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
         for letter in letters:
-            letterlocstat[letter]={}
-            letterstat[letter] = 0
+            self.letterlocstat[letter]={}
+            self.letterstat[letter] = 0
             for loc in range(cols):
-                letterlocstat[letter][loc] = 0
+                self.letterlocstat[letter][loc] = 0
 
         for word in self.words:
             for loc in range(cols):
                 for letter in letters:
                     if word[loc] == letter:
-                        letterstat[letter] += 1
-                        letterlocstat[letter][loc] +=1
+                        self.letterstat[letter] += 1
+                        self.letterlocstat[letter][loc] +=1
 
-        sorted_letters = sorted(letterstat, key=letterstat.get, reverse=True)
+        sorted_letters = sorted(self.letterstat, key=self.letterstat.get, reverse=True)
 
+        rtn = 'LETTER FREQUENCY:\nLetter Total  Postion 1 thru '+str(cols)+'......\n'
         for letter in sorted_letters:
-            rtn += " "+letter.upper()+" "+"{:5.0f}".format(letterstat[letter])+"   "
+            rtn += "  "+letter.upper()+" "+"{:5.0f}".format(self.letterstat[letter])+"   "
             for loc in range(cols):
-                rtn += "{:4.0f}".format(letterlocstat[letter][loc]) + " "
-
+                rtn += "{:4.0f}".format(self.letterlocstat[letter][loc]) + " "
             rtn += "\n"
-
         rtn += "\n"
         # print(rtn)
         return rtn
 
+    def wordscore(self, cols):
+        rtn = 'WORD SCORE:\n'
+        self.score = {}
+        for word in self.words:
+            self.score[word] = 0
+            for loc in range(cols):
+                self.score[word] += self.letterlocstat[word[loc]][loc]
+        print(self.words)
+        print(self.score)
+
+        sorted_score = sorted(self.score, key=self.score.get, reverse=True)
+
+        print(sorted_score)
+
+        for word in sorted_score:
+            rtn += word + " " + str(self.score[word]) + '\n'
+            print(word,self.score[word])
+        rtn += '\n'
+        return rtn
 
     def searchresults(self, letterlist, letterdict):
 

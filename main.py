@@ -86,15 +86,18 @@ def keyup(e):
 
     # APPLY SEARCH CRITERIA TO WORDLISTS
     wr20k.criteriaresults(w20k.words, crit.mergecrit, cols)
-    text20k = wr20k.formatwords(16,100)
+    text20k = wr20k.formatwords(16,160)
     wr71k.criteriaresults(w71k.words, crit.mergecrit, cols)
     wr71k.words = wr71k.uniquewords(wr20k.words)
-    text71k = wr71k.formatwords(16, 100)
+    text71k = wr71k.formatwords(16, 160)
     print(text20k+text71k)
     bottomlabel.config(text=text20k+text71k)
 
-    text20stats = wr20k.statistics(cols)
-    sidelabel.config(text=text20stats)
+    text20freq = wr20k.letterfrequency(cols)
+    sidelabel.config(text=text20freq)
+    text20score = wr20k.wordscore(cols)
+    print(text20score)
+    side2label.config(text=text20score)
 
 
 def backspace(e):
