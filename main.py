@@ -75,11 +75,11 @@ def nextcell():
     global currentcol, currentrow
     if currentcol < cols - 1:
         currentcol += 1
-    else:  # last column
+    else:        # last column
         if currentrow < rows - 1:
             currentrow += 1
             currentcol = 0
-        else:
+        else:    # last row
             currentcol = cols - 1
 
 
@@ -105,9 +105,15 @@ def updateresults():
     # sidelabel.config(text=crit.strcrit+crit.strerror)
     text20freq = wr20k.letterfrequency(cols)
     sidelabel.config(text=text20freq)
+
     text20score = wr20k.wordscore(cols)
     # print(text20score)
     side2label.config(text=text20score)
+
+    text20double = wr20k.doublescore(cols)
+    print(text20double)
+    side3label.config(text=text20double)
+
 
 
 def backspace(e):
@@ -169,19 +175,26 @@ for r in range(rows):
         btn[r][c].grid(row=r, column=c)
 
 sidelabeltext = 'Wordle Helper Program.\nClick cell to change color'
-sidelabel = tk.Label(ws, text=sidelabeltext,width=40, height=28, bd=2,
-                     font=('Courier',8,'bold'),justify='left', anchor="nw" )
+sidelabel = tk.Label(ws, text=sidelabeltext, width=40, height=28, bd=2,
+                     font=('Courier',8,'bold'), justify='left', anchor="nw" )
 sidelabel.grid(row=0,column=cols+1, rowspan=rows)
 
 side2labeltext = 'Word score'
-side2label = tk.Label(ws, text=side2labeltext,width=40, height=28, bd=2,
-                     font=('Courier',8,'bold'),justify='left', anchor="nw" )
+side2label = tk.Label(ws, text=side2labeltext, width=20, height=28, bd=2,
+                     font=('Courier',8,'bold') ,justify='left', anchor="nw" )
 side2label.grid(row=0,column=cols+2, rowspan=rows)
+
+side3labeltext = 'Double Letter'
+side3label = tk.Label(ws, text=side3labeltext,width=20, height=28, bd=2,
+                     font=('Courier',8,'bold'),justify='left', anchor="nw" )
+side3label.grid(row=0,column=cols+3, rowspan=rows)
+
+
 
 bottomlabeltext = 'Search Results'
 bottomlabel = tk.Label(ws, text=bottomlabeltext,width=100, height=42, bd=2,
                        font=('Courier',10,'bold'),justify='left', anchor="nw" )
-bottomlabel.grid(row=rows, column=0, columnspan=cols+3)
+bottomlabel.grid(row=rows, column=0, columnspan=cols+4)
 
 
 

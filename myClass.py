@@ -5,6 +5,7 @@ class Wordlist:
         self.letterstat = {}
         self.letterlocstat = {}
         self.score = {}
+        self.double = {}
 
     def readwordfile(self, filename):
         try:
@@ -122,6 +123,29 @@ class Wordlist:
             # print(word, self.score[word])
         rtn += '\n'
         return rtn
+
+    def doublescore(self, cols):
+        rtn = 'DOUBLE LETTER:\n'
+        self.double = {}
+        for word in self.words:
+
+            for loc in range(cols-1):
+                dubkey = word[loc] + word[loc+1]
+                if dubkey in self.double:
+                    self.double[dubkey] += 1
+                else:
+                    self.double[dubkey] = 1
+
+        sorted_double = sorted(self.double, key=self.double.get, reverse=True)
+
+        for dubkey in sorted_double:
+            rtn += dubkey + " " + str(self.double[dubkey]) + '\n'
+            # print(word, self.score[word])
+        rtn += '\n'
+        return rtn
+
+        print(self.double)
+
 
     def searchresults(self, letterlist, letterdict):
 
