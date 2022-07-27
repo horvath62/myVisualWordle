@@ -60,9 +60,7 @@ def keyup(e):
         # letter or space
         cell[currentrow][currentcol].setletter(letter)
         btn[currentrow][currentcol].config(text=letter)
-
         nextcell()
-
         updateresults()
         print("keyup:", "new current(", currentrow, ',', currentcol, ')')
 
@@ -77,10 +75,12 @@ def nextcell():
     global currentcol, currentrow
     if currentcol < cols - 1:
         currentcol += 1
-    else:
-        currentcol = 0
+    else:  # last column
         if currentrow < rows - 1:
             currentrow += 1
+            currentcol = 0
+        else:
+            currentcol = cols - 1
 
 
 def updateresults():
