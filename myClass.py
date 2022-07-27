@@ -13,7 +13,7 @@ class Wordlist:
                 fh.close()
             return 1
         except IOError:
-            print("IOError: ",filename," File does not appear to exist.")
+            print("IOError: ",filename," File does not seem to exist.")
             return 0
 
     def writewordfile(self, filename):
@@ -233,6 +233,8 @@ class LetterCell:
             self.color = 'G'
         elif self.color == 'G':
             self.color = 'R'
+        elif self.color == 'R':
+            self.color = 'V'
         else:
             self.color = 'B'
 
@@ -321,11 +323,11 @@ class Criteria:
                     lettercrit[letterkey]={}
                 else:
                     letterdict = rowdata[letterkey]
-                    # letterdict i.e: { 0:G , 1:B, 2:Y }
+                    # letterdict i.e: { 0:G , 1:B, 4:Y }
                     letterhit = []     # list of in this location(lockey) GREEN cell
                     lettermiss = []     # list of miss in this location YELLOW/BLACK
                     lettertot = 0      # total of GREEN and YELLOW cells
-                    letterexact = "N"  # exactly total or equal to or more than lettertotal
+                    letterexact = "N"  # exactly total (true) or equal to or more than letter total (false)
                     letterany = "N"    # letter could be in any location
                     for lockey in letterdict:
                         if letterdict[lockey] == "G":
@@ -338,8 +340,10 @@ class Criteria:
                             lettermiss.append(lockey)
                             letterexact = "Y"
                         elif letterdict[lockey] == "R":
-                            lettertot += 1
+                            lettermiss.append(lockey)
                             letterany = "Y"
+                        elif letterdict[lockey] == "V":
+                            lettermiss.append(lockey)
                         else:   # letterkey[lockey] == (space)
                             pass
                     tempdict={}
@@ -467,6 +471,8 @@ def cmap(colorcode):
        c = '#228B22'
    elif colorcode == 'R':
        c = '#B22222'
+   elif colorcode == 'V':
+       c = '#8470FF'  #LightSlateBlue
    else:
        c = '#FF1493'
    return c

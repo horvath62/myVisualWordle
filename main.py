@@ -29,16 +29,18 @@ def button(r,c):
     global currentcol, currentrow
     bgcolor = cell[r][c].nextcolor()
     btn[r][c].config(bg=cmap(bgcolor))
-    #currentcol = c
-    #currentrow = r
-    #print('button: current(',r,',',c,') color:', bgcolor, cmap(bgcolor))
 
+    nextcell()
+
+    updateresults()
+
+    currentcol = c
+    currentrow = r
+    nextcell()
+
+    #print('button: current(',r,',',c,') color:', bgcolor, cmap(bgcolor))
     #printcells(rows,cols,cell)
 
-    #crit.scanwords(rows,cols,cell)
-    #crit.printrowlist()
-    #crit.printrow(0)
-    #crit.makecriteria(0)
 
 def keydown(e):
     global currentcol, currentrow
@@ -49,7 +51,7 @@ def keyup(e):
     print("keyup:","current(",currentrow,',',currentcol,')',e.char)
     letter = e.char.upper()
     if len(letter) == 0:
-        # non character
+        # non character (backspace, etc..)
         print("non-character: current cell:(", currentrow, ',', currentcol, ')')
         cell[currentrow][currentcol].setletter(' ')
         btn[currentrow][currentcol].config(text=' ')
@@ -59,21 +61,29 @@ def keyup(e):
         cell[currentrow][currentcol].setletter(letter)
         btn[currentrow][currentcol].config(text=letter)
 
-        # increment to next cell
-        if currentcol < cols-1:
-            currentcol += 1
-        else:
-            currentcol = 0
-            if currentrow < rows - 1:
-                currentrow += 1
-        print("increment:", "current(", currentrow, ',', currentcol, ')')
+        nextcell()
+
+        updateresults()
+        print("keyup:", "new current(", currentrow, ',', currentcol, ')')
 
     else:
-        # not a letter
+        # not a letter (!@#$ etc...)
         print("NOT A LETTER: current(", currentrow, ',', currentcol, ')', letter)
         cell[currentrow][currentcol].setletter(' ')
         btn[currentrow][currentcol].config(text=' ')
 
+def nextcell():
+    # increment to next cell
+    global currentcol, currentrow
+    if currentcol < cols - 1:
+        currentcol += 1
+    else:
+        currentcol = 0
+        if currentrow < rows - 1:
+            currentrow += 1
+
+
+def updateresults():
 
     # CREATE SEARCH CRITERIA
     crit.scanwords(rows,cols,cell)
@@ -103,12 +113,14 @@ def keyup(e):
 def backspace(e):
     # Note after this routine, the default keyrelease(keyup) will run
     global currentcol, currentrow
-    print("backspace: current(",currentrow,',',currentcol,')')
+    print("backspace: old current(",currentrow,',',currentcol,')')
     if currentcol > 0:
         currentcol -= 1
     elif currentrow > 0:
         currentrow -= 1
         currentcol = 4
+    print("backspace: new current(",currentrow,',',currentcol,')')
+
 
 
 def focus(event):
