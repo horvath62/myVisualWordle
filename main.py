@@ -111,7 +111,7 @@ def updateresults():
     side2label.config(text=text20score)
 
     text20double = wr20k.doublescore(cols)
-    print(text20double)
+    # print(text20double)
     side3label.config(text=text20double)
 
 
