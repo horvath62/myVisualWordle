@@ -6,7 +6,7 @@ from myClass import *
 
 # ROWS and COLUMNS (GLOBAL)
 rows=7
-cols=5
+cols=6
 
 wordfile_20k = "fiveletter_20k_trimmed.txt"
 # wordfile_20k = "fiveletter_test.txt"
@@ -124,7 +124,7 @@ def backspace(e):
         currentcol -= 1
     elif currentrow > 0:
         currentrow -= 1
-        currentcol = 4
+        currentcol = cols - 1
     print("backspace: new current(",currentrow,',',currentcol,')')
 
 
