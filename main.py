@@ -6,7 +6,7 @@ from myClass import *
 
 # ROWS and COLUMNS (GLOBAL)
 rows=7
-cols=6
+cols=5
 
 wordfile_20k = "fiveletter_20k_trimmed.txt"
 # wordfile_20k = "fiveletter_test.txt"
