@@ -131,7 +131,7 @@ def backspace(e):
 
 def focus(event):
     widget = ws.focus_get()
-    # print("focus:", widget, " has focus")
+    #print("focus:", widget, " has focus")
 
 
 def scancells():
@@ -163,6 +163,8 @@ ws.bind_all("<Button-1>", lambda e: focus(e))
 currentrow = 0
 currentcol = 0
 
+# The button should really be a class.
+# one forum said fields are better than buttons...????
 cell = [[0 for x in range(cols)] for y in range(rows)]
 btn = [[0 for x in range(cols)] for y in range(rows)]
 for r in range(rows):
