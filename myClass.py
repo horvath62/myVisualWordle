@@ -430,11 +430,12 @@ class Criteria:
     def eliminationcrit(self, criteria):
         self.mergecrit = {}
         # a:[G:[1],Y:[3],total:2,exact:N}
+        # b:.....
+        # change all G[n] to G[0]
         for letterkey in criteria:
             for greenloc in criteria("G"):
-                if len(greenloc==0):  # no green letter
-                    # no change
-                else:
+                pass
+
 
 
 
