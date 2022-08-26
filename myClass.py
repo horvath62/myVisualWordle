@@ -1,9 +1,14 @@
 class Wordlist:
     def __init__(self, words, title ):
+        # A List of words
         self.words = words
+        # Title for list
         self.title = title
+        # Letter statistics - occurance
         self.letterstat = {}
+        # Letter statistics - based on position
         self.letterlocstat = {}
+        # Score for each word based on statistics
         self.score = {}
         self.double = {}
 
@@ -270,18 +275,19 @@ class LetterCell:
 
 class Criteria:
     def __init__(self, cols):
-        self.rowlist = []          # list(rows) of dict(key=letter) of dict(key=location,value=cell color
-        # gets converted to...
-        self.rowcrit = []          # list(rows) of dict(key=letter) of dict(key=hit,miss,etc.(2 dict and 1 int and 2 chars)
-        # which gets merged into a single criteria
-        self.mergecrit = {}       #                dict(key=letter) of dict(key=hit,miss,etc.(2 dict and 1 int and 2 chars)
+        # rowlist is represetation of the wordle graphical visual fields (i.e. yellow letters, green letters, etc)
+        self.rowlist = []         # list(rows) of dict(key=letter) of dict(key=location,value=cell color
+        # rowlist gets converted to rowcrit. A more functional coded representation of the rows of visual letters
+        self.rowcrit = []         # list(rows) of dict(key=letter) of dict(key=hit,miss,etc.(2 dict and 1 int and 2 chars)
+        # rowcrit gets merges all the row criteris into a single criteria representing all the rows
+        self.mergecrit = {}       # dict(key=letter) of dict(key=hit,miss,etc.(2 dict and 1 int and 2 chars)
+        # example
         # a:[G:[1],Y:[3],total:2,exact:N}
         # b:[G:[],Y:[2,5],total: 1, exact: ######WIP
         # c:[null], 0 only
-        self.strcrit = ''
-        self.strerror = ''
-        self.cols = cols
-
+        self.strcrit = ''   # for printing the criteria
+        self.strerror = ''  # error messages from the merged criteria
+        self.cols = cols    # number of columns (letters in word, legacy = 5)
 
     def scanwords(self, rows, cols, cell):
         # list of row data
@@ -420,6 +426,39 @@ class Criteria:
                 mcrit = {'hit':mhit, 'miss':mmiss, 'tot':mtot, 'exact':mexact, 'any':many}
                 self.mergecrit[letterkey] = mcrit
                 # print(' Merged:>>>' + str(self.mergecrit))
+
+    def eliminationcrit(self, criteria):
+        self.mergecrit = {}
+        # a:[G:[1],Y:[3],total:2,exact:N}
+        for letterkey in criteria:
+            for greenloc in criteria("G"):
+                if len(greenloc==0):  # no green letter
+                    # no change
+                else:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     def textcriteria(self):
         templabel=""
