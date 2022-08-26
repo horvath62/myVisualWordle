@@ -100,6 +100,10 @@ def updateresults():
     # print(text20k+text71k)
     bottomlabel.config(text=text20k+text71k)
 
+    # ### make new criteria for elimination word list
+    # run elimination criteria
+
+
     # DISPLAY RESULTS
     # crit.textcriteria()
     # sidelabel.config(text=crit.strcrit+crit.strerror)
