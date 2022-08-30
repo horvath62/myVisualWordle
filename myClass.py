@@ -433,9 +433,10 @@ class Criteria:
         # b:.....
         # change all G[n] to G[0]
         for letterkey in criteria:
-            for greenloc in criteria("G"):
-                pass
-
+            letterdict = criteria(letterkey)
+            letterdict("G") = []
+            print(letterdict)
+            self.mergecrit[letterkey]=letterdict
 
 
 
