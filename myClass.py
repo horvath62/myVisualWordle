@@ -444,6 +444,23 @@ class Criteria:
             print(self.mergecrit)
             print()
 
+    def elimYcriteria(self, criteria):
+        self.mergecrit = {}
+        # a:[G:[1],Y:[3],total:2,exact:N}
+        # b:.....
+        # change all G[n] to G[0]
+        for letterkey in criteria:
+            letterdict = criteria[letterkey]
+            print("<", letterkey, "> preYfilter", letterdict)
+            transferlist = letterdict["miss"]
+            letterdict['hit'] = []
+            letterdict['tot'] = 0
+            letterdict['miss'] = []
+            print("       Yfilter", letterdict)
+            self.mergecrit[letterkey] = letterdict
+            print(self.mergecrit)
+            print()
+
 
 
 

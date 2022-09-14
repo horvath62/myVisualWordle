@@ -93,7 +93,7 @@ def updateresults():
     crit.mergecriteria()
     # create elimination word criteria
     elimGcrit.elimGcriteria(crit.mergecrit)
-
+    elimYcrit.elimYcriteria(elimGcrit.mergecrit)
 
 
 
