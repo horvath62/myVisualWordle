@@ -23,7 +23,8 @@ w71k.readwordfile(wordfile_71k)
 wr71k = Wordlist([],'Results from 71K wordlist')
 
 crit = Criteria(cols)
-
+elimGcrit = Criteria(cols)
+elimGYcrit = Criteria(cols)
 
 def button(r,c):
     global currentcol, currentrow
@@ -90,6 +91,11 @@ def updateresults():
     crit.printrowlist()
     crit.makecriteria()
     crit.mergecriteria()
+    # create elimination word criteria
+    elimGcrit.elimGcriteria(crit.mergecrit)
+
+
+
 
     # APPLY SEARCH CRITERIA TO WORDLISTS
     wr20k.criteriaresults(w20k.words, crit.mergecrit, cols)
@@ -98,6 +104,12 @@ def updateresults():
     wr71k.words = wr71k.uniquewords(wr20k.words)
     text71k = wr71k.formatwords(16, 160)
     # print(text20k+text71k)
+
+
+
+
+
+
     bottomlabel.config(text=text20k+text71k)
 
     # ### make new criteria for elimination word list
@@ -117,7 +129,6 @@ def updateresults():
     text20double = wr20k.doublescore(cols)
     # print(text20double)
     side3label.config(text=text20double)
-
 
 
 def backspace(e):

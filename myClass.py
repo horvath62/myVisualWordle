@@ -427,16 +427,22 @@ class Criteria:
                 self.mergecrit[letterkey] = mcrit
                 # print(' Merged:>>>' + str(self.mergecrit))
 
-    def eliminationcrit(self, criteria):
+    def elimGcriteria(self, criteria):
         self.mergecrit = {}
         # a:[G:[1],Y:[3],total:2,exact:N}
         # b:.....
         # change all G[n] to G[0]
         for letterkey in criteria:
-            letterdict = criteria(letterkey)
-            letterdict("G") = []
-            print(letterdict)
+            letterdict = criteria[letterkey]
+            print("<",letterkey,"> preGfilter",letterdict)
+            transferlist = letterdict["hit"]
+            letterdict['hit']=[]
+            letterdict['tot'] -= len(transferlist)
+            letterdict['miss'] = letterdict['miss'] + transferlist
+            print("       Gfilter",letterdict)
             self.mergecrit[letterkey]=letterdict
+            print(self.mergecrit)
+            print()
 
 
 
