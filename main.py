@@ -22,6 +22,10 @@ w71k = Wordlist([], "71K WORD FILE")
 w71k.readwordfile(wordfile_71k)
 wr71k = Wordlist([],'Results from 71K wordlist')
 
+wr20kG = Wordlist([], "Elimination Green Wordlist")
+wr20kGY = Wordlist([], "Elimination all Green and Yellow")
+
+# Init search criteria
 crit = Criteria(cols)
 elimGcrit = Criteria(cols)
 elimGYcrit = Criteria(cols)
@@ -93,8 +97,7 @@ def updateresults():
     crit.mergecriteria()
     # create elimination word criteria
     elimGcrit.elimGcriteria(crit.mergecrit)
-    elimYcrit.elimYcriteria(elimGcrit.mergecrit)
-
+    elimGYcrit.elimGYcriteria(crit.mergecrit)
 
 
     # APPLY SEARCH CRITERIA TO WORDLISTS
@@ -105,9 +108,9 @@ def updateresults():
     text71k = wr71k.formatwords(16, 160)
     # print(text20k+text71k)
 
-
-
-
+    # APPLY ELIMINATION CRITERIA TO REMAINING WORDS
+    wr20kG.criteriaresults(wr20k.words, elimGcrit.mergecrit, cols)
+    wr20kGY.criteriaresults(wr20k.words, elimGYcrit.mergecrit, cols)
 
 
     bottomlabel.config(text=text20k+text71k)

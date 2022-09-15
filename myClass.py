@@ -429,9 +429,9 @@ class Criteria:
 
     def elimGcriteria(self, criteria):
         self.mergecrit = {}
-        # a:[G:[1],Y:[3],total:2,exact:N}
+        # a:[hit:[1],miss:[3],total:2,exact:N}
         # b:.....
-        # change all G[n] to G[0]
+        # change all Green Letters to Black
         for letterkey in criteria:
             letterdict = criteria[letterkey]
             print("<",letterkey,"> preGfilter",letterdict)
@@ -444,19 +444,17 @@ class Criteria:
             print(self.mergecrit)
             print()
 
-    def elimYcriteria(self, criteria):
+    def elimGYcriteria(self, criteria):
         self.mergecrit = {}
-        # a:[G:[1],Y:[3],total:2,exact:N}
-        # b:.....
-        # change all G[n] to G[0]
+        # make criteria eliminating all yellow and black
         for letterkey in criteria:
             letterdict = criteria[letterkey]
-            print("<", letterkey, "> preYfilter", letterdict)
-            transferlist = letterdict["miss"]
+            print("<", letterkey, "> preGYfilter", letterdict)
             letterdict['hit'] = []
             letterdict['tot'] = 0
             letterdict['miss'] = []
-            print("       Yfilter", letterdict)
+            letterdict['exact'] = 'Y'
+            print("       GYfilter", letterdict)
             self.mergecrit[letterkey] = letterdict
             print(self.mergecrit)
             print()
