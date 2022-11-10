@@ -4,6 +4,7 @@ import tkinter as tk
 #from tkinter import ttk
 from myClass import *
 
+
 # ROWS and COLUMNS (GLOBAL)
 rows=7
 cols=5
@@ -23,7 +24,7 @@ w71k.readwordfile(wordfile_71k)
 wr71k = Wordlist([],'Results from 71K wordlist')
 
 wr20kG = Wordlist([], "Elimination Green Wordlist")
-wr20kGY = Wordlist([], "Elimination all Green and Yellow")
+wr20kGY = Wordlist([], "Elimination all Letters Green and Yellow")
 
 # Init search criteria
 crit = Criteria(cols)
@@ -95,43 +96,57 @@ def updateresults():
     crit.printrowlist()
     crit.makecriteria()
     crit.mergecriteria()
+
+
+    crit.printcriteria()
+
     # create elimination word criteria
     elimGcrit.elimGcriteria(crit.mergecrit)
     elimGYcrit.elimGYcriteria(crit.mergecrit)
 
+    crit.printrowlist()
+    elimGYcrit.printrowlist()
+
+    crit.printcriteria()
+    elimGcrit.printcriteria()
+    elimGYcrit.printcriteria()
+
 
     # APPLY SEARCH CRITERIA TO WORDLISTS
     wr20k.criteriaresults(w20k.words, crit.mergecrit, cols)
-    text20k = wr20k.formatwords(16,160)
+    text20k = wr20k.formatwords(16, 64)
     wr71k.criteriaresults(w71k.words, crit.mergecrit, cols)
     wr71k.words = wr71k.uniquewords(wr20k.words)
-    text71k = wr71k.formatwords(16, 160)
+    text71k = wr71k.formatwords(16, 64)
     # print(text20k+text71k)
 
+
     # APPLY ELIMINATION CRITERIA TO REMAINING WORDS
+    #print("Elim G criteria:", elimGcrit)
     wr20kG.criteriaresults(wr20k.words, elimGcrit.mergecrit, cols)
+    textelimG = wr20kG.formatwords(16, 64)
+
     wr20kGY.criteriaresults(wr20k.words, elimGYcrit.mergecrit, cols)
-
-
-    bottomlabel.config(text=text20k+text71k)
-
-    # ### make new criteria for elimination word list
-    # run elimination criteria
+    textelimGY = wr20kGY.formatwords(16, 64)
 
 
     # DISPLAY RESULTS
-    # crit.textcriteria()
-    # sidelabel.config(text=crit.strcrit+crit.strerror)
+    bottomlabel.config(text=text20k + text71k )
+    # + textelimG + textelimGY
+
     text20freq = wr20k.letterfrequency(cols)
     sidelabel.config(text=text20freq)
 
     text20score = wr20k.wordscore(cols)
-    # print(text20score)
     side2label.config(text=text20score)
 
-    text20double = wr20k.doublescore(cols)
-    # print(text20double)
-    side3label.config(text=text20double)
+    textelimG = wr20k.elimGscore(wr20k, cols)
+    side3label.config(text=textelimG)
+
+    textelimGY = wr20k.elimGYscore(wr20k, cols)
+    side4label.config(text=textelimGY)
+
+    print("UPDATE DONE")
 
 
 def backspace(e):
@@ -200,21 +215,26 @@ sidelabel = tk.Label(ws, text=sidelabeltext, width=40, height=28, bd=2,
 sidelabel.grid(row=0,column=cols+1, rowspan=rows)
 
 side2labeltext = 'Word score'
-side2label = tk.Label(ws, text=side2labeltext, width=20, height=28, bd=2,
+side2label = tk.Label(ws, text=side2labeltext, width=14, height=28, bd=2,
                      font=('Courier',8,'bold') ,justify='left', anchor="nw" )
 side2label.grid(row=0,column=cols+2, rowspan=rows)
 
-side3labeltext = 'Double Letter'
-side3label = tk.Label(ws, text=side3labeltext,width=20, height=28, bd=2,
+side3labeltext = 'NO GREEN'
+side3label = tk.Label(ws, text=side3labeltext,width=12, height=28, bd=2,
                      font=('Courier',8,'bold'),justify='left', anchor="nw" )
 side3label.grid(row=0,column=cols+3, rowspan=rows)
+
+side4labeltext = 'ELIMINATION'
+side4label = tk.Label(ws, text=side4labeltext,width=12, height=28, bd=2,
+                     font=('Courier',8,'bold'),justify='left', anchor="nw" )
+side4label.grid(row=0,column=cols+4, rowspan=rows)
 
 
 
 bottomlabeltext = 'Search Results'
 bottomlabel = tk.Label(ws, text=bottomlabeltext,width=100, height=42, bd=2,
                        font=('Courier',10,'bold'),justify='left', anchor="nw" )
-bottomlabel.grid(row=rows, column=0, columnspan=cols+4)
+bottomlabel.grid(row=rows, column=0, columnspan=cols+5)
 
 
 

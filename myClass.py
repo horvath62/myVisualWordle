@@ -1,3 +1,4 @@
+import copy
 class Wordlist:
     def __init__(self, words, title ):
         # A List of words
@@ -149,7 +150,25 @@ class Wordlist:
         rtn += '\n'
         return rtn
 
-        print(self.double)
+
+
+    def elimGscore(self, wordscore, cols):
+        rtn = 'ELIM GREEN:\n'
+        self.elimG = {}
+        for word in self.words:
+            self.elimG[word] = 0
+            for letter in word:
+                self.elimG[word] += wordscore.letterstat[letter]
+
+        sorted_double = sorted(self.elimG, key=self.elimG.get, reverse=True)
+
+        for wordkey in sorted_double:
+            rtn += wordkey + " " + str(self.elimG[wordkey]) + '\n'
+            # print(word, self.score[word])
+        rtn += '\n'
+        return rtn
+
+        print(self.elimG)
 
 
     def searchresults(self, letterlist, letterdict):
@@ -275,11 +294,11 @@ class LetterCell:
 
 class Criteria:
     def __init__(self, cols):
-        # rowlist is represetation of the wordle graphical visual fields (i.e. yellow letters, green letters, etc)
+        # rowlist is representation of the wordle graphical visual fields (i.e. yellow letters, green letters, etc)
         self.rowlist = []         # list(rows) of dict(key=letter) of dict(key=location,value=cell color
         # rowlist gets converted to rowcrit. A more functional coded representation of the rows of visual letters
         self.rowcrit = []         # list(rows) of dict(key=letter) of dict(key=hit,miss,etc.(2 dict and 1 int and 2 chars)
-        # rowcrit gets merges all the row criteris into a single criteria representing all the rows
+        # rowcrit (list of row criteria) gets merged into a single criteria representing all the rows (mergecrit)
         self.mergecrit = {}       # dict(key=letter) of dict(key=hit,miss,etc.(2 dict and 1 int and 2 chars)
         # example
         # a:[G:[1],Y:[3],total:2,exact:N}
@@ -290,11 +309,11 @@ class Criteria:
         self.cols = cols    # number of columns (letters in word, legacy = 5)
 
     def scanwords(self, rows, cols, cell):
-        # list of row data
+        # scans the GUI cells and makes the list of row (rowlist)
         self.rowlist = []
 
         for r in range(rows):
-            # Row data is dict-dict
+            # Row data is dict-dict example:
             # { A : { 0:G , 2:Y } , B : { 1:B } }
             # A in pos 0 is green and in pos 2 is yellow. B in pos 1 is black
             letterdict = {}
@@ -340,6 +359,7 @@ class Criteria:
 
 
     def makecriteria(self):
+        # Make coded list of criteria per row from rowlist
         self.rowcrit = []
         for index, rowdata in enumerate(self.rowlist):
 
@@ -386,6 +406,7 @@ class Criteria:
             self.rowcrit.append(lettercrit.copy())
 
     def mergecriteria(self):
+        # Merge rowlist criteria (each row in list) into a single criteria (mergecrit)
         self.mergecrit={}
         self.strerror=''
         for rowidx, row in enumerate(self.rowcrit, start=1):
@@ -433,33 +454,38 @@ class Criteria:
         # b:.....
         # change all Green Letters to Black
         for letterkey in criteria:
-            letterdict = criteria[letterkey]
-            print("<",letterkey,"> preGfilter",letterdict)
-            transferlist = letterdict["hit"]
+            letterdict = copy.deepcopy(criteria[letterkey])
+            hitlist = letterdict["hit"]
             letterdict['hit']=[]
-            letterdict['tot'] -= len(transferlist)
-            letterdict['miss'] = letterdict['miss'] + transferlist
-            print("       Gfilter",letterdict)
+            # letterdict['tot'] # no change
+            letterdict['miss'] = letterdict['miss'] + hitlist
             self.mergecrit[letterkey]=letterdict
-            print(self.mergecrit)
             print()
 
+
+    # ##### WIP ######
     def elimGYcriteria(self, criteria):
         self.mergecrit = {}
         # make criteria eliminating all yellow and black
         for letterkey in criteria:
-            letterdict = criteria[letterkey]
-            print("<", letterkey, "> preGYfilter", letterdict)
+            letterdict = copy.deepcopy(criteria[letterkey])
+            hitlist = letterdict["hit"]
+            misslist = letterdict['miss']
             letterdict['hit'] = []
             letterdict['tot'] = 0
             letterdict['miss'] = []
-            letterdict['exact'] = 'Y'
-            print("       GYfilter", letterdict)
             self.mergecrit[letterkey] = letterdict
-            print(self.mergecrit)
             print()
 
-
+    # ######## WIP ###########
+    def printcriteria(self):
+        print("==>",self.mergecrit)
+        for letterkey in self.mergecrit:
+            letterdict = self.mergecrit[letterkey]
+            print("   ", letterkey," --> ",end="")
+            for category in letterdict:
+                print("  ", category, ":", letterdict[category], end="")
+            print()
 
 
 
