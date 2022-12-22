@@ -11,7 +11,7 @@ class Wordlist:
         self.letterlocstat = {}
         # Score for each word based on statistics
         self.score = {}
-        self.double = {}
+
 
     def readwordfile(self, filename):
         try:
@@ -130,27 +130,6 @@ class Wordlist:
         rtn += '\n'
         return rtn
 
-    def doublescore(self, cols):
-        rtn = 'DOUBLE LETTER:\n'
-        self.double = {}
-        for word in self.words:
-
-            for loc in range(cols-1):
-                dubkey = word[loc] + word[loc+1]
-                if dubkey in self.double:
-                    self.double[dubkey] += 1
-                else:
-                    self.double[dubkey] = 1
-
-        sorted_double = sorted(self.double, key=self.double.get, reverse=True)
-
-        for dubkey in sorted_double:
-            rtn += dubkey + " " + str(self.double[dubkey]) + '\n'
-            # print(word, self.score[word])
-        rtn += '\n'
-        return rtn
-
-
 
     def elimGscore(self, wordscore, cols):
         rtn = 'ELIM GREEN:\n'
@@ -160,15 +139,20 @@ class Wordlist:
             for letter in word:
                 self.elimG[word] += wordscore.letterstat[letter]
 
-        sorted_double = sorted(self.elimG, key=self.elimG.get, reverse=True)
+        sorted_noGreen = sorted(self.elimG, key=self.elimG.get, reverse=True)
 
-        for wordkey in sorted_double:
+        for wordkey in sorted_noGreen:
             rtn += wordkey + " " + str(self.elimG[wordkey]) + '\n'
             # print(word, self.score[word])
         rtn += '\n'
         return rtn
 
         print(self.elimG)
+
+    def noColorscore(self, wordscore, cols):
+        rtn ='ELIM G:/n'
+        self.noColor = {}
+        return rtn
 
 
     def searchresults(self, letterlist, letterdict):
@@ -464,7 +448,7 @@ class Criteria:
 
 
     # ##### WIP ######
-    def elimGYcriteria(self, criteria):
+    def noColorcriteria(self, criteria):
         self.mergecrit = {}
         # make criteria eliminating all yellow and black
         for letterkey in criteria:

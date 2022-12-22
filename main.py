@@ -29,7 +29,7 @@ wr20kGY = Wordlist([], "Elimination all Letters Green and Yellow")
 # Init search criteria
 crit = Criteria(cols)
 elimGcrit = Criteria(cols)
-elimGYcrit = Criteria(cols)
+noColorcrit = Criteria(cols)
 
 def button(r,c):
     global currentcol, currentrow
@@ -102,14 +102,14 @@ def updateresults():
 
     # create elimination word criteria
     elimGcrit.elimGcriteria(crit.mergecrit)
-    elimGYcrit.elimGYcriteria(crit.mergecrit)
+    noColorcrit.noColorcriteria(crit.mergecrit)
 
     crit.printrowlist()
-    elimGYcrit.printrowlist()
+    noColorcrit.printrowlist()
 
     crit.printcriteria()
     elimGcrit.printcriteria()
-    elimGYcrit.printcriteria()
+    noColorcrit.printcriteria()
 
 
     # APPLY SEARCH CRITERIA TO WORDLISTS
@@ -126,13 +126,13 @@ def updateresults():
     wr20kG.criteriaresults(wr20k.words, elimGcrit.mergecrit, cols)
     textelimG = wr20kG.formatwords(16, 64)
 
-    wr20kGY.criteriaresults(wr20k.words, elimGYcrit.mergecrit, cols)
-    textelimGY = wr20kGY.formatwords(16, 64)
+    wr20kGY.criteriaresults(wr20k.words, noColorcrit.mergecrit, cols)
+    textnoColor = wr20kGY.formatwords(16, 64)
 
 
     # DISPLAY RESULTS
     bottomlabel.config(text=text20k + text71k )
-    # + textelimG + textelimGY
+    # + textelimG + textnoColor
 
     text20freq = wr20k.letterfrequency(cols)
     sidelabel.config(text=text20freq)
@@ -143,8 +143,9 @@ def updateresults():
     textelimG = wr20k.elimGscore(wr20k, cols)
     side3label.config(text=textelimG)
 
-    textelimGY = wr20k.elimGYscore(wr20k, cols)
-    side4label.config(text=textelimGY)
+    textnoColor = wr20k.noColorscore(wr20k, cols)
+    # side4label.config(text=textnoColor)
+    side4label.config(text=textnoColor)
 
     print("UPDATE DONE")
 
