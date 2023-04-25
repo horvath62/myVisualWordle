@@ -1,0 +1,47 @@
+class Wordlist:
+    def __init__(self, words, title ):
+        # A List of words
+        self.words = words
+        # Title for list
+        self.title = title
+        # Letter statistics - occurance
+        self.letterstat = {}
+        # Letter statistics - based on position
+        self.letterlocstat = {}
+        # Score for each word based on statistics
+        self.score = {}
+    def readwordfile(self, filename):
+    def writewordfile(self, filename):
+    def makelowercase(self):
+    def commonwords(self, wordlist):
+    def uniquewords(self, wordlist):
+    def trimwords(self, trimlength):
+    def getWordcount(self):
+    def addword(self, word):
+    def formatwords(self, numcols, maxwords):
+    def letterfrequency(self, cols):
+    def wordscore(self, cols):
+    def elimGscore(self, wordscore, cols):
+    def noColorscore(self, wordscore, cols):
+    def searchresults(self, letterlist, letterdict):
+        # Deprecated: used in console version
+    def criteriaresults(self, inputwordlist, criteria, cols):
+
+class LetterCell:
+    def __init__(self, row, col, letter):
+    def nextcolor(self):
+    def setletter(self, letter):
+
+class Criteria:
+    def __init__(self, cols):
+    def scanwords(self, rows, cols, cell):
+    def printrowlist(self):
+    def printrow(self,rowindex):
+    def makecriteria(self):
+    def mergecriteria(self):
+    def elimGcriteria(self, criteria):
+
+        # ##### WIP ######
+    def noColorcriteria(self, criteria):
+
+    def printcriteria(self):
