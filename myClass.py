@@ -141,7 +141,6 @@ class Wordlist:
         rtn += '\n'
         return rtn
 
-
     def elimGscore(self, wordscore, cols):
         rtn = 'ELIM GREEN:\n'
         self.elimG = {}
