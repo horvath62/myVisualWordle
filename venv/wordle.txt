@@ -13,8 +13,9 @@ class Wordlist:
     def readwordfile(self, filename):
     def writewordfile(self, filename):
     def makelowercase(self):
-    def commonwords(self, wordlist):
-    def uniquewords(self, wordlist):
+    def wordsunion(self, wordlist):
+    def wordssubtract(self, wordlist):
+    def wordsmerge(self, wordlist):
     def trimwords(self, trimlength):
     def getWordcount(self):
     def addword(self, word):

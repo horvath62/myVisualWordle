@@ -37,7 +37,7 @@ class Wordlist:
             wordlist.append(w.lower())
         return wordlist
 
-    def commonwords(self, wordlist):
+    def wordsunion(self, wordlist):
         commonlist = []
         for w in self.words:
             for x in wordlist:
@@ -45,7 +45,7 @@ class Wordlist:
                     commonlist.append(w)
         return commonlist
 
-    def uniquewords(self, wordlist):
+    def wordssubtract(self, wordlist):
         uniquelist = []
         for w in self.words:
             common = False
@@ -55,6 +55,17 @@ class Wordlist:
             if common == False:
                 uniquelist.append(w)
         return uniquelist
+
+    def wordsmerge(self, wordlist):
+        mergelist = self.words.copy()
+        for x in wordlist:
+            common = False
+            for w in self.words:
+                if w == x:
+                    common = True
+            if common == False:
+                mergelist.append(x)
+        return mergelist
 
     def trimwords(self, trimlength):
         trimlist = []

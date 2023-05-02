@@ -23,6 +23,9 @@ w71k = Wordlist([], "71K WORD FILE")
 w71k.readwordfile(wordfile_71k)
 wr71k = Wordlist([],'Results from 71K wordlist')
 
+wAll = Wordlist([], "Merged Word Files")
+wrAll = Wordlist([], 'Results from All Words')
+
 wr20kG = Wordlist([], "Elimination Green Wordlist")
 wr20kGY = Wordlist([], "Elimination all Letters Green and Yellow")
 
@@ -116,9 +119,11 @@ def updateresults():
     wr20k.criteriaresults(w20k.words, crit.mergecrit, cols)
     text20k = wr20k.formatwords(16, 64)
     wr71k.criteriaresults(w71k.words, crit.mergecrit, cols)
-    wr71k.words = wr71k.uniquewords(wr20k.words)
+    wr71k.words = wr71k.wordssubtract(wr20k.words)
     text71k = wr71k.formatwords(16, 64)
     # print(text20k+text71k)
+    wrAll.words = wr20k.wordsmerge(wr71k.words)
+    textAll = wrAll.formatwords(16, 64)
 
 
     # APPLY ELIMINATION CRITERIA TO REMAINING WORDS
@@ -131,7 +136,7 @@ def updateresults():
 
 
     # DISPLAY RESULTS
-    bottomlabel.config(text=text20k + text71k )
+    bottomlabel.config(text=text20k + text71k + textAll )
     # + textelimG + textnoColor
 
     text20freq = wr20k.letterfrequency(cols)
@@ -140,12 +145,15 @@ def updateresults():
     text20score = wr20k.wordscore(cols)
     side2label.config(text=text20score)
 
-    textelimG = wr20k.elimGscore(wr20k, cols)
-    side3label.config(text=textelimG)
+    textAllfreq = wrAll.letterfrequency(cols)
 
-    textnoColor = wr20k.noColorscore(wr20k, cols)
-    # side4label.config(text=textnoColor)
-    side4label.config(text=textnoColor)
+    textAllscore = wrAll.wordscore(cols)
+    side3label.config(text=textAllscore)
+
+    textelimG = wr20k.elimGscore(wr20k, cols)
+    side4label.config(text=textelimG)
+
+
 
     print("UPDATE DONE")
 
