@@ -218,6 +218,7 @@ for r in range(rows):
                               )
         btn[r][c].grid(row=r, column=c)
 
+
 sidelabeltext = 'Wordle Helper Program.\nClick cell to change color'
 sidelabel = tk.Label(ws, text=sidelabeltext, width=40, height=28, bd=2,
                      font=('Courier',8,'bold'), justify='left', anchor="nw" )
