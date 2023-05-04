@@ -6,7 +6,7 @@ from myClass import *
 
 
 # ROWS and COLUMNS (GLOBAL)
-rows=7
+rows=6
 cols=5
 
 wordfile_20k = "fiveletter_20k_trimmed.txt"
@@ -49,6 +49,10 @@ def button(r,c):
 
     #print('button: current(',r,',',c,') color:', bgcolor, cmap(bgcolor))
     #printcells(rows,cols,cell)
+
+def removeword(c):
+    updateresults()
+
 
 
 def keydown(e):
@@ -209,6 +213,8 @@ currentcol = 0
 # one forum said fields are better than buttons...????
 cell = [[0 for x in range(cols)] for y in range(rows)]
 btn = [[0 for x in range(cols)] for y in range(rows)]
+celllast = [ 0 for x in range(cols)]
+btnlast = [ 0 for x in range(cols)]
 for r in range(rows):
     for c in range(cols):
         cell[r][c] = LetterCell(r,c," ")
@@ -217,6 +223,16 @@ for r in range(rows):
                               bg=cmap(cell[r][c].color)
                               )
         btn[r][c].grid(row=r, column=c)
+
+
+
+for c in range(cols):
+    celllast[c] = LetterCell(rows, c, " ")
+    btnlast[c] = tk.Button(ws, text=celllast[c].letter, command=lambda c=c: removeword(c),
+                          font=('calibre', 20, 'bold'), fg='white', justify='center', width=2,
+                          bg=cmap(celllast[c].color)
+                          )
+    btnlast[c].grid(row=rows, column=c)
 
 
 sidelabeltext = 'Wordle Helper Program.\nClick cell to change color'
@@ -244,7 +260,7 @@ side4label.grid(row=0,column=cols+4, rowspan=rows)
 bottomlabeltext = 'Search Results'
 bottomlabel = tk.Label(ws, text=bottomlabeltext,width=100, height=42, bd=2,
                        font=('Courier',10,'bold'),justify='left', anchor="nw" )
-bottomlabel.grid(row=rows, column=0, columnspan=cols+5)
+bottomlabel.grid(row=rows+1, column=0, columnspan=cols+5)
 
 
 
