@@ -213,7 +213,6 @@ currentcol = 0
 # one forum said fields are better than buttons...????
 cell = [[0 for x in range(cols)] for y in range(rows)]
 btn = [[0 for x in range(cols)] for y in range(rows)]
-celllast = [ 0 for x in range(cols)]
 btnlast = [ 0 for x in range(cols)]
 for r in range(rows):
     for c in range(cols):
@@ -227,10 +226,10 @@ for r in range(rows):
 
 
 for c in range(cols):
-    celllast[c] = LetterCell(rows, c, " ")
-    btnlast[c] = tk.Button(ws, text=celllast[c].letter, command=lambda c=c: removeword(c),
+
+    btnlast[c] = tk.Button(ws, text='X', command=lambda c=c: removeword(c),
                           font=('calibre', 20, 'bold'), fg='white', justify='center', width=2,
-                          bg=cmap(celllast[c].color)
+                          bg=cmap('B')
                           )
     btnlast[c].grid(row=rows, column=c)
 
