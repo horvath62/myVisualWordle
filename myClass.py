@@ -77,6 +77,9 @@ class Wordlist:
     def getWordcount(self):
         return len(self.words)
 
+    def getWord(self, index):
+        return self.words[index]
+
     def addword(self, word):
         self.words.append(word)
 

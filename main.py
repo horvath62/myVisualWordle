@@ -6,8 +6,10 @@ from myClass import *
 
 
 # ROWS and COLUMNS (GLOBAL)
-rows=6
+rows=5
 cols=5
+
+notaindex = 0
 
 wordfile_20k = "fiveletter_20k_trimmed.txt"
 # wordfile_20k = "fiveletter_test.txt"
@@ -50,10 +52,20 @@ def button(r,c):
     #print('button: current(',r,',',c,') color:', bgcolor, cmap(bgcolor))
     #printcells(rows,cols,cell)
 
-def removeword(c):
+def press_notaword():
     updateresults()
+def press_notanext():
+    global notaindex
+    totalwords = wrAll.getWordcount()
+    notaindex += 1
+    if notaindex > totalwords:
+        notaindex = 0
+    print ("notaindex=",notaindex)
 
 
+    updateresults()
+def press_notaprev():
+    updateresults()
 
 def keydown(e):
     global currentcol, currentrow
@@ -217,42 +229,50 @@ btnlast = [ 0 for x in range(cols)]
 for r in range(rows):
     for c in range(cols):
         cell[r][c] = LetterCell(r,c," ")
-        btn[r][c] = tk.Button(ws, text=cell[r][c].letter, command=lambda r=r, c=c : button(r,c),
+        btn[r][c] = tk.Button(ws, text=cell[r][c].letter, command=lambda r=r, c=c: button(r,c),
                               font=('calibre',20,'bold'), fg='white', justify='center', width=2,
                               bg=cmap(cell[r][c].color)
                               )
         btn[r][c].grid(row=r, column=c)
 
+notaword = tk.Button(ws, text='ABCDE', command=lambda: press_notaword(),
+                          font=('calibre', 20, 'bold'), fg='white', justify='left', width=6,
+                          bg=cmap('B')
+                          )
+notaword.grid(row=rows, column=0, columnspan=3)
 
-
-for c in range(cols):
-
-    btnlast[c] = tk.Button(ws, text='X', command=lambda c=c: removeword(c),
+notanext = tk.Button(ws, text='+', command=lambda: press_notanext(),
                           font=('calibre', 20, 'bold'), fg='white', justify='center', width=2,
                           bg=cmap('B')
                           )
-    btnlast[c].grid(row=rows, column=c)
+notanext.grid(row=rows, column=3)
+
+notaprev = tk.Button(ws, text='-', command=lambda: press_notaprev(),
+                          font=('calibre', 20, 'bold'), fg='white', justify='center', width=2,
+                          bg=cmap('B')
+                          )
+notaprev.grid(row=rows, column=4)
 
 
 sidelabeltext = 'Wordle Helper Program.\nClick cell to change color'
 sidelabel = tk.Label(ws, text=sidelabeltext, width=40, height=28, bd=2,
                      font=('Courier',8,'bold'), justify='left', anchor="nw" )
-sidelabel.grid(row=0,column=cols+1, rowspan=rows)
+sidelabel.grid(row=0,column=cols+1, rowspan=rows+1)
 
 side2labeltext = 'Word score'
 side2label = tk.Label(ws, text=side2labeltext, width=14, height=28, bd=2,
                      font=('Courier',8,'bold') ,justify='left', anchor="nw" )
-side2label.grid(row=0,column=cols+2, rowspan=rows)
+side2label.grid(row=0,column=cols+2, rowspan=rows+1)
 
 side3labeltext = 'NO GREEN'
 side3label = tk.Label(ws, text=side3labeltext,width=12, height=28, bd=2,
                      font=('Courier',8,'bold'),justify='left', anchor="nw" )
-side3label.grid(row=0,column=cols+3, rowspan=rows)
+side3label.grid(row=0,column=cols+3, rowspan=rows+1)
 
 side4labeltext = 'ELIMINATION'
 side4label = tk.Label(ws, text=side4labeltext,width=12, height=28, bd=2,
                      font=('Courier',8,'bold'),justify='left', anchor="nw" )
-side4label.grid(row=0,column=cols+4, rowspan=rows)
+side4label.grid(row=0,column=cols+4, rowspan=rows+1)
 
 
 
