@@ -80,6 +80,12 @@ class Wordlist:
     def getWord(self, index):
         return self.words[index]
 
+    def checkWord(self, word):
+        if word in self.words:
+            return True
+        else:
+            return False
+
     def addword(self, word):
         self.words.append(word)
 

@@ -53,14 +53,24 @@ def button(r,c):
     #printcells(rows,cols,cell)
 
 def press_notaword():
+    #if not in list then add to list
     updateresults()
 def press_notanext():
     global notaindex
     totalwords = wrAll.getWordcount()
+    print(totalwords)
     notaindex += 1
     if notaindex > totalwords:
         notaindex = 0
-    print ("notaindex=",notaindex)
+    notaword_shown = wrAll.getWord(notaindex)
+    print ("notaindex=",notaindex, wrAll.getWord(notaindex))
+    notaword.config(text=notaword_shown)
+    if wrAll.checkWord(notaword_shown):
+        notaword.config(bg='green')
+    else:
+        notaword.config(bg='red')
+
+
 
 
     updateresults()
