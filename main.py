@@ -16,6 +16,9 @@ wordfile_20k = "fiveletter_20k_trimmed.txt"
 wordfile_71k = "fiveletter_71k.txt"
 # wordfile_71k = "fiveletter_test.txt"
 
+wordfile_not = "fiveletter_notaword.txt"
+
+
 # Make list of five letter words
 w20k = Wordlist([], "20K WORD FILE")
 w20k.readwordfile(wordfile_20k)
@@ -28,8 +31,13 @@ wr71k = Wordlist([],'Results from 71K wordlist')
 wAll = Wordlist([], "Merged Word Files")
 wrAll = Wordlist([], 'Results from All Words')
 
+wNota = Wordlist([], "Not A Word List")
+wNota.readwordfile(wordfile_not)
+
 wr20kG = Wordlist([], "Elimination Green Wordlist")
 wr20kGY = Wordlist([], "Elimination all Letters Green and Yellow")
+
+
 
 # Init search criteria
 crit = Criteria(cols)
@@ -54,13 +62,22 @@ def button(r,c):
 
 def press_notaword():
     #if not in list then add to list
+    theword = notaword['text']
+    if wNota.checkWord(theword):
+        #remove word from Notaword list
+        wNota.removeword(theword)
+        notaword.config(bg='green')
+    else:
+        #addword
+        wNota.addword(theword)
+        notaword.config(bg='red')
+
     updateresults()
 def press_notanext():
     global notaindex
     totalwords = wrAll.getWordcount()
-    print(totalwords)
     notaindex += 1
-    if notaindex > totalwords:
+    if notaindex > totalwords - 1:
         notaindex = 0
     notaword_shown = wrAll.getWord(notaindex)
     print ("notaindex=",notaindex, wrAll.getWord(notaindex))
@@ -70,11 +87,22 @@ def press_notanext():
     else:
         notaword.config(bg='red')
 
-
-
-
     updateresults()
+
 def press_notaprev():
+    global notaindex
+    totalwords = wrAll.getWordcount()
+    notaindex -= 1
+    if notaindex < 0:
+        notaindex = totalwords - 1
+    notaword_shown = wrAll.getWord(notaindex)
+    print ("notaindex=",notaindex, wrAll.getWord(notaindex))
+    notaword.config(text=notaword_shown)
+    if wrAll.checkWord(notaword_shown):
+        notaword.config(bg='green')
+    else:
+        notaword.config(bg='red')
+
     updateresults()
 
 def keydown(e):
@@ -150,6 +178,8 @@ def updateresults():
     # print(text20k+text71k)
     wrAll.words = wr20k.wordsmerge(wr71k.words)
     textAll = wrAll.formatwords(16, 64)
+    textNota = wNota.formatwords(16,64)
+
 
 
     # APPLY ELIMINATION CRITERIA TO REMAINING WORDS
@@ -162,7 +192,7 @@ def updateresults():
 
 
     # DISPLAY RESULTS
-    bottomlabel.config(text=text20k + text71k + textAll )
+    bottomlabel.config(text=text20k + text71k + textAll + textNota)
     # + textelimG + textnoColor
 
     text20freq = wr20k.letterfrequency(cols)

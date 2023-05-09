@@ -89,6 +89,9 @@ class Wordlist:
     def addword(self, word):
         self.words.append(word)
 
+    def removeword(self, word):
+        self.words.remove(word)
+
     def formatwords(self, numcols, maxwords):
         rtn = '\n'
         rtn += "-------- " + str(self.title)+" "+str(len(self.words))+" words --------"
