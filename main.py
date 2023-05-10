@@ -46,22 +46,24 @@ elimGcrit = Criteria(cols)
 noColorcrit = Criteria(cols)
 
 def button(r,c):
+    print(">>>BUTTON<<<")
     global currentcol, currentrow
     bgcolor = cell[r][c].nextcolor()
     btn[r][c].config(bg=cmap(bgcolor))
 
-    nextcell()
+    #nextcell()
 
     updateresults()
 
-    currentcol = c
-    currentrow = r
-    nextcell()
+    #currentcol = c
+    #currentrow = r
+    #nextcell()
 
     #print('button: current(',r,',',c,') color:', bgcolor, cmap(bgcolor))
     #printcells(rows,cols,cell)
 
 def press_notaword():
+    print(">>>NOT A WORD<<<")
     #if not in list then add to list
     theword = notaword['text']
     if wNota.checkWord(theword):
@@ -75,13 +77,13 @@ def press_notaword():
 
     updateresults()
 def press_notanext():
+    print(">>>NEXT WORD<<<")
     global notaindex
     totalwords = wrAll.getWordcount()
     notaindex += 1
     if notaindex > totalwords - 1:
         notaindex = 0
     notaword_shown = wrAll.getWord(notaindex)
-    print ("notaindex=",notaindex, wrAll.getWord(notaindex))
     notaword.config(text=notaword_shown)
     if wrAll.checkWord(notaword_shown):
         notaword.config(bg='green')
@@ -91,13 +93,13 @@ def press_notanext():
     updateresults()
 
 def press_notaprev():
+    print(">>>PREV WORD<<<")
     global notaindex
     totalwords = wrAll.getWordcount()
     notaindex -= 1
     if notaindex < 0:
         notaindex = totalwords - 1
     notaword_shown = wrAll.getWord(notaindex)
-    print ("notaindex=", notaindex, wrAll.getWord(notaindex))
     notaword.config(text=notaword_shown)
     if wrAll.checkWord(notaword_shown):
         notaword.config(bg='green')
@@ -108,17 +110,18 @@ def press_notaprev():
 
 def keydown(e):
     global currentcol, currentrow
-    # print("keydown: current(",currentrow,',',currentcol,')',e.char)
+    print(">>>EVENT<<< keydown: current(",currentrow,',',currentcol,')',e.char)
 
 def keyup(e):
     global currentcol, currentrow
-    print("keyup:","current(",currentrow,',',currentcol,')',e.char)
+    print(">>>EVENT<<< keyup:","current(",currentrow,',',currentcol,')',e.char)
     letter = e.char.upper()
     if len(letter) == 0:
         # non character (backspace, etc..)
-        print("non-character: current cell:(", currentrow, ',', currentcol, ')')
+        print("   keyup: non-character")
         cell[currentrow][currentcol].setletter(' ')
         btn[currentrow][currentcol].config(text=' ')
+        updateresults()
 
     elif (ord(letter) <= 90 and ord(letter) >= 65) or (ord(letter) == 32):
         # letter or space
@@ -126,17 +129,19 @@ def keyup(e):
         btn[currentrow][currentcol].config(text=letter)
         nextcell()
         updateresults()
-        print("keyup:", "new current(", currentrow, ',', currentcol, ')')
+        print("   keyup: letter",letter)
 
     else:
         # not a letter (!@#$ etc...)
-        print("NOT A LETTER: current(", currentrow, ',', currentcol, ')', letter)
+        print("   keyup: NOT A LETTER", letter)
         cell[currentrow][currentcol].setletter(' ')
         btn[currentrow][currentcol].config(text=' ')
 
 def nextcell():
     # increment to next cell
+    print("NEXT CELL")
     global currentcol, currentrow
+    btn[currentrow][currentcol].config(bg="black")
     if currentcol < cols - 1:
         currentcol += 1
     else:        # last column
@@ -145,13 +150,46 @@ def nextcell():
             currentcol = 0
         else:    # last row
             currentcol = cols - 1
+    btn[currentrow][currentcol].config(bg="grey")
+    print("   new cell(", currentrow, ',', currentcol, ')')
+
+def backspace(e):
+    # Note after this routine, the default keyrelease(keyup) will run
+    global currentcol, currentrow
+    btn[currentrow][currentcol].config(bg="black")
+    print(">>>EVENT: Backspace<<<: old current(",currentrow,',',currentcol,')')
+    if currentcol > 0:
+        currentcol -= 1
+    elif currentrow > 0:
+        currentrow -= 1
+        currentcol = cols - 1
+    btn[currentrow][currentcol].config(bg="grey")
+    print("   backspace: new current(",currentrow,',',currentcol,')')
+
+def focus(event):
+    widget = ws.focus_get()
+    print(">>>Focus<<<", widget, " has focus")
+
+def scancells():
+    for rindex in range(rows):
+        word = ">>>"
+        color = ">>>"
+        for cindex in range(cols):
+            word += cell[rindex][cindex].letter
+            color += cell[rindex][cindex].color
+        word += "<<<"
+        color += "<<<"
+        print("   ",currentrow, currentcol, rindex, cindex, word, color)
+
+
 
 
 def updateresults():
-
+    print("UPDATE RESULTS")
+    global rows, cols
     # CREATE SEARCH CRITERIA
     crit.scanwords(rows,cols,cell)
-    crit.printrowlist()
+    # crit.printrowlist()
     crit.makecriteria()
     crit.mergecriteria()
 
@@ -161,12 +199,14 @@ def updateresults():
     elimGcrit.elimGcriteria(crit.mergecrit)
     noColorcrit.noColorcriteria(crit.mergecrit)
 
-    crit.printrowlist()
+    # crit.printrowlist()
     noColorcrit.printrowlist()
 
+    '''
     crit.printcriteria()
     elimGcrit.printcriteria()
     noColorcrit.printcriteria()
+    '''
 
     # APPLY SEARCH CRITERIA TO WORDLISTS
     wr20k.criteriaresults(w20k.words, crit.mergecrit, cols)
@@ -208,43 +248,17 @@ def updateresults():
     textelimG = wr20k.elimGscore(wr20k, cols)
     side4label.config(text=textelimG)
 
+    for c in range(cols):
+        for r in range(rows):
+            color = cell[r][c].color
+            if color != 'B':
+                btn[r][c].config(bg=cmap(color))
 
-
-    print("UPDATE DONE")
-
-
-def backspace(e):
-    # Note after this routine, the default keyrelease(keyup) will run
-    global currentcol, currentrow
-    print("backspace: old current(",currentrow,',',currentcol,')')
-    if currentcol > 0:
-        currentcol -= 1
-    elif currentrow > 0:
-        currentrow -= 1
-        currentcol = cols - 1
-    print("backspace: new current(",currentrow,',',currentcol,')')
+    # print("UPDATE DONE")
 
 
 
-def focus(event):
-    widget = ws.focus_get()
-    #print("focus:", widget, " has focus")
-
-
-def scancells():
-    for rindex in range(rows):
-        word = ">>>"
-        color = ">>>"
-        for cindex in range(cols):
-            word += cell[rindex][cindex].letter
-            color += cell[rindex][cindex].color
-        word += "<<<"
-        color += "<<<"
-        print(currentrow, currentcol, rindex, cindex, word, color)
-
-
-
-
+# SETUP TK GRAPHICS
 ws = tk.Tk()
 ws.title("Wordle Helper")
 ws.resizable(False,False)

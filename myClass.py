@@ -466,7 +466,6 @@ class Criteria:
             # letterdict['tot'] # no change
             letterdict['miss'] = letterdict['miss'] + hitlist
             self.mergecrit[letterkey]=letterdict
-            print()
 
 
     # ##### WIP ######
@@ -481,38 +480,19 @@ class Criteria:
             letterdict['tot'] = 0
             letterdict['miss'] = []
             self.mergecrit[letterkey] = letterdict
-            print()
-
     # ######## WIP ###########
+
+
     def printcriteria(self):
-        print("==>",self.mergecrit)
+        print("CRITERIA: ",self.mergecrit)
+        '''
         for letterkey in self.mergecrit:
             letterdict = self.mergecrit[letterkey]
-            print("   ", letterkey," --> ",end="")
+            # print("   ", letterkey," --> ",end="")
             for category in letterdict:
                 print("  ", category, ":", letterdict[category], end="")
             print()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        '''
 
 
     def textcriteria(self):
