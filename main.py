@@ -33,6 +33,7 @@ wrAll = Wordlist([], 'Results from All Words')
 
 wNota = Wordlist([], "Not A Word List")
 wNota.readwordfile(wordfile_not)
+wrNota = Wordlist([],'Criteria Results of Not a Word List')
 
 wr20kG = Wordlist([], "Elimination Green Wordlist")
 wr20kGY = Wordlist([], "Elimination all Letters Green and Yellow")
@@ -96,7 +97,7 @@ def press_notaprev():
     if notaindex < 0:
         notaindex = totalwords - 1
     notaword_shown = wrAll.getWord(notaindex)
-    print ("notaindex=",notaindex, wrAll.getWord(notaindex))
+    print ("notaindex=", notaindex, wrAll.getWord(notaindex))
     notaword.config(text=notaword_shown)
     if wrAll.checkWord(notaword_shown):
         notaword.config(bg='green')
@@ -154,7 +155,6 @@ def updateresults():
     crit.makecriteria()
     crit.mergecriteria()
 
-
     crit.printcriteria()
 
     # create elimination word criteria
@@ -168,7 +168,6 @@ def updateresults():
     elimGcrit.printcriteria()
     noColorcrit.printcriteria()
 
-
     # APPLY SEARCH CRITERIA TO WORDLISTS
     wr20k.criteriaresults(w20k.words, crit.mergecrit, cols)
     text20k = wr20k.formatwords(16, 64)
@@ -178,12 +177,12 @@ def updateresults():
     # print(text20k+text71k)
     wrAll.words = wr20k.wordsmerge(wr71k.words)
     textAll = wrAll.formatwords(16, 64)
-    textNota = wNota.formatwords(16,64)
 
-
+    wrNota.criteriaresults(wNota.words, crit.mergecrit, cols)
+    textNota = wrNota.formatwords(16, 64)
 
     # APPLY ELIMINATION CRITERIA TO REMAINING WORDS
-    #print("Elim G criteria:", elimGcrit)
+    # print("Elim G criteria:", elimGcrit)
     wr20kG.criteriaresults(wr20k.words, elimGcrit.mergecrit, cols)
     textelimG = wr20kG.formatwords(16, 64)
 
