@@ -21,12 +21,13 @@ class Wordlist:
             return 1
         except IOError:
             print("IOError: ",filename," File does not seem to exist.")
-            return 0
+            return fh
 
     def writewordfile(self, filename):
         try:
             with open(filename, "w") as fh:
                 fh.writelines('\n'.join(self.words))
+                fh.close()
         except:
             print("Error on open file for write")
 

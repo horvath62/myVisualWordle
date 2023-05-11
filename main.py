@@ -92,6 +92,9 @@ def press_notanext():
 
     updateresults()
 
+def press_notawrite():
+    wNota.writewordfile(wordfile_not)
+
 def press_notaprev():
     print(">>>PREV WORD<<<")
     global notaindex
@@ -215,11 +218,15 @@ def updateresults():
     wr71k.words = wr71k.wordssubtract(wr20k.words)
     text71k = wr71k.formatwords(16, 64)
     # print(text20k+text71k)
-    wrAll.words = wr20k.wordsmerge(wr71k.words)
-    textAll = wrAll.formatwords(16, 64)
 
     wrNota.criteriaresults(wNota.words, crit.mergecrit, cols)
     textNota = wrNota.formatwords(16, 64)
+
+    wrAll.words = wr20k.wordsmerge(wr71k.words)
+    wrAll.words = wrAll.wordssubtract(wrNota.words)
+    textAll = wrAll.formatwords(16, 64)
+
+
 
     # APPLY ELIMINATION CRITERIA TO REMAINING WORDS
     # print("Elim G criteria:", elimGcrit)
@@ -254,9 +261,6 @@ def updateresults():
             if color != 'B':
                 btn[r][c].config(bg=cmap(color))
 
-    # print("UPDATE DONE")
-
-
 
 # SETUP TK GRAPHICS
 ws = tk.Tk()
@@ -289,22 +293,28 @@ for r in range(rows):
         btn[r][c].grid(row=r, column=c)
 
 notaword = tk.Button(ws, text='ABCDE', command=lambda: press_notaword(),
-                          font=('calibre', 20, 'bold'), fg='white', justify='left', width=6,
+                          font=('calibre', 20, 'bold'), fg='white', justify='center', width=5,
                           bg=cmap('B')
                           )
-notaword.grid(row=rows, column=0, columnspan=3)
+notaword.grid(row=rows, column=0, columnspan=2)
 
 notanext = tk.Button(ws, text='+', command=lambda: press_notanext(),
                           font=('calibre', 20, 'bold'), fg='white', justify='center', width=2,
                           bg=cmap('B')
                           )
-notanext.grid(row=rows, column=3)
+notanext.grid(row=rows, column=2)
 
 notaprev = tk.Button(ws, text='-', command=lambda: press_notaprev(),
                           font=('calibre', 20, 'bold'), fg='white', justify='center', width=2,
                           bg=cmap('B')
                           )
-notaprev.grid(row=rows, column=4)
+notaprev.grid(row=rows, column=3)
+
+notawrite = tk.Button(ws, text='W', command=lambda: press_notaprev(),
+                          font=('calibre', 20, 'bold'), fg='white', justify='center', width=2,
+                          bg=cmap('B')
+                          )
+notawrite.grid(row=rows, column=4)
 
 
 sidelabeltext = 'Wordle Helper Program.\nClick cell to change color'
