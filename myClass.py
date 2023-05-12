@@ -28,6 +28,7 @@ class Wordlist:
             with open(filename, "w") as fh:
                 fh.writelines('\n'.join(self.words))
                 fh.close()
+                print("Writing File:",filename)
         except:
             print("Error on open file for write")
 
