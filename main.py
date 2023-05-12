@@ -89,11 +89,7 @@ def press_notanext():
         notaword.config(bg='green')
     else:
         notaword.config(bg='red')
-
     updateresults()
-
-def press_notawrite():
-    wNota.writewordfile(wordfile_not)
 
 def press_notaprev():
     print(">>>PREV WORD<<<")
@@ -108,8 +104,10 @@ def press_notaprev():
         notaword.config(bg='green')
     else:
         notaword.config(bg='red')
-
     updateresults()
+
+def press_notawrite():
+    wNota.writewordfile(wordfile_not)
 
 def keydown(e):
     global currentcol, currentrow
@@ -310,7 +308,7 @@ notaprev = tk.Button(ws, text='-', command=lambda: press_notaprev(),
                           )
 notaprev.grid(row=rows, column=3)
 
-notawrite = tk.Button(ws, text='W', command=lambda: press_notaprev(),
+notawrite = tk.Button(ws, text='W', command=lambda: press_notawrite(),
                           font=('calibre', 20, 'bold'), fg='white', justify='center', width=2,
                           bg=cmap('B')
                           )
