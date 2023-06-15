@@ -19,7 +19,7 @@ wordfile_71k = "fiveletter_71k.txt"
 wordfile_not = "fiveletter_notaword.txt"
 
 
-# Make list of five letter words
+# INIT Wordlist objects of five letter words
 w20k = Wordlist([], "20K WORD FILE")
 w20k.readwordfile(wordfile_20k)
 wr20k = Wordlist([],'Results from 20K wordlist')
@@ -239,8 +239,8 @@ def updateresults():
     bottomlabel.config(text=text20k + text71k + textAll + textNota)
     # + textelimG + textnoColor
 
-    text20freq = wr20k.letterfrequency(cols)
-    sidelabel.config(text=text20freq)
+    textfreq = wr20k.letterfrequency(cols)
+    sidelabel.config(text=textfreq)
 
     text20score = wr20k.wordscore(cols)
     side2label.config(text=text20score)
