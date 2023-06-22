@@ -239,16 +239,17 @@ def updateresults():
     bottomlabel.config(text=text20k + text71k + textAll + textNota)
     # + textelimG + textnoColor
 
-    textfreq = wr20k.letterfrequency(cols)
-    sidelabel.config(text=textfreq)
+    #textfreq = wr20k.letterfrequency(cols)
+    #sidelabel.config(text=textfreq)
 
-    text20score = wr20k.wordscore(cols)
-    side2label.config(text=text20score)
+    #text20score = wr20k.wordscore(cols)
+    #side2label.config(text=text20score)
 
     textAllfreq = wrAll.letterfrequency(cols)
+    sidelabel.config(text=textAllfreq)
 
     textAllscore = wrAll.wordscore(cols)
-    side3label.config(text=textAllscore)
+    side2label.config(text=textAllscore)
 
     textelimG = wr20k.elimGscore(wr20k, cols)
     side4label.config(text=textelimG)
