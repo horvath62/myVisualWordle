@@ -155,6 +155,29 @@ class Wordlist:
         rtn += '\n'
         return rtn
 
+    def scorewords_noG(self, noGlist, cols):
+        # Uses the self score, but apply to another wordlist (all the words)
+        rtn = 'NO GREEN SCORE:\n'
+
+        for word in self.words:
+            for loc in range(col):
+                letter = word[loc]
+                if letter in noGlist:
+                    pass
+                else:
+                    score[word] +=self.letterstat[letter]
+
+        print(self.score)
+
+        sorted_noGreen = sorted(self.words, key=self.score.get, reverse=True)
+
+        for word in sorted_noGreen:
+            rtn += word + " " + str(self.score[word]) + '\n'
+            # print(word, self.score[word])
+        rtn += '\n'
+        return rtn
+
+
     def elimGscore(self, wordscore, cols):
         rtn = 'ELIM GREEN:\n'
         self.elimG = {}
@@ -315,6 +338,7 @@ class Criteria:
         self.strcrit = ''   # for printing the criteria
         self.strerror = ''  # error messages from the merged criteria
         self.cols = cols    # number of columns (letters in word, legacy = 5)
+        self.greenletters = []  # list of all letters that are green
 
     def scanwords(self, rows, cols, cell):
         # scans the GUI cells and makes the list of row (rowlist)
@@ -455,6 +479,20 @@ class Criteria:
                 mcrit = {'hit':mhit, 'miss':mmiss, 'tot':mtot, 'exact':mexact, 'any':many}
                 self.mergecrit[letterkey] = mcrit
                 # print(' Merged:>>>' + str(self.mergecrit))
+
+    def greenletter(self):
+        self.greenletters = []
+        # a:{hit:[1],miss:[3],total:2,exact:N}
+        # b: .....
+        for letterkey in self.mergecrit:
+            singlelettercrit = self.mergecrit[letterkey]
+            hitlist = singlelettercrit["hit"]
+            if len(hitlist) != 0:
+                # letter is green
+                self.greenletters.append(letterkey)
+                print("###>> ",self.greenletters)
+
+
 
     def elimGcriteria(self, criteria):
         self.mergecrit = {}

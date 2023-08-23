@@ -42,8 +42,8 @@ wr20kGY = Wordlist([], "Elimination all Letters Green and Yellow")
 
 # Init search criteria
 crit = Criteria(cols)
-elimGcrit = Criteria(cols)
-noColorcrit = Criteria(cols)
+# elimGcrit = Criteria(cols)
+# noColorcrit = Criteria(cols)
 
 def button(r,c):
     print(">>>BUTTON<<<")
@@ -197,11 +197,11 @@ def updateresults():
     crit.printcriteria()
 
     # create elimination word criteria
-    elimGcrit.elimGcriteria(crit.mergecrit)
-    noColorcrit.noColorcriteria(crit.mergecrit)
+    # elimGcrit.elimGcriteria(crit.mergecrit)
+    # noColorcrit.noColorcriteria(crit.mergecrit)
 
     # crit.printrowlist()
-    noColorcrit.printrowlist()
+    # noColorcrit.printrowlist()
 
     '''
     crit.printcriteria()
@@ -224,15 +224,21 @@ def updateresults():
     wrAll.words = wrAll.wordssubtract(wrNota.words)
     textAll = wrAll.formatwords(16, 64)
 
+    # find all green letters in crit, put in self.greenletters list
+    crit.greenletter()
+
+    wAll.scorewords_noG(crit.greenletters, cols)
+
+
 
 
     # APPLY ELIMINATION CRITERIA TO REMAINING WORDS
     # print("Elim G criteria:", elimGcrit)
-    wr20kG.criteriaresults(wr20k.words, elimGcrit.mergecrit, cols)
-    textelimG = wr20kG.formatwords(16, 64)
+    # wr20kG.criteriaresults(wr20k.words, elimGcrit.mergecrit, cols)
+    # textelimG = wr20kG.formatwords(16, 64)
 
-    wr20kGY.criteriaresults(wr20k.words, noColorcrit.mergecrit, cols)
-    textnoColor = wr20kGY.formatwords(16, 64)
+    # wr20kGY.criteriaresults(wr20k.words, noColorcrit.mergecrit, cols)
+    # textnoColor = wr20kGY.formatwords(16, 64)
 
 
     # DISPLAY RESULTS
@@ -251,8 +257,11 @@ def updateresults():
     textAllscore = wrAll.wordscore(cols)
     side2label.config(text=textAllscore)
 
-    textelimG = wr20k.elimGscore(wr20k, cols)
-    side4label.config(text=textelimG)
+    textNoGreenscore = wAll.scorewords_noG(crit.greenletters, cols)
+    side2label.config(text=textNoGreenscore)
+
+    # textelimG = wr20k.elimGscore(wr20k, cols)
+    # side4label.config(text=textelimG)
 
     for c in range(cols):
         for r in range(rows):
