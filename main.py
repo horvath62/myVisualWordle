@@ -11,7 +11,8 @@ cols=5
 
 notaindex = 0
 
-debug = True
+# debug = True
+debug = False
 
 if debug:
     wordfile_20k = "fiveletter_test.txt"

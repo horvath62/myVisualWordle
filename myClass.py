@@ -169,8 +169,6 @@ class Wordlist:
             # print(word," ",end="")
             for loc in range(cols):
                 letter = word[loc]
-
-                print("###",letter, greenlist)
                 if (letter in greenlist) or (letter in uniqueletter):
                     pass
                 else:
