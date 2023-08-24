@@ -155,23 +155,32 @@ class Wordlist:
         rtn += '\n'
         return rtn
 
-    def scorewords_noG(self, noGlist, cols):
+    def scorewords_noG(self, greenlist, scoredwordlist, cols):
         # Uses the self score, but apply to another wordlist (all the words)
         rtn = 'NO GREEN SCORE:\n'
+        self.score = {}
+
+        print(scoredwordlist.score)
 
         for word in self.words:
-            for loc in range(col):
+            self.score[word] = 0
+            # print(word," ",end="")
+            for loc in range(cols):
                 letter = word[loc]
-                if letter in noGlist:
+                print("###",letter, greenlist)
+                if letter in greenlist:
                     pass
                 else:
-                    score[word] +=self.letterstat[letter]
+                    self.score[word] += scoredwordlist.letterstat[letter]
+                    pass
 
         print(self.score)
 
         sorted_noGreen = sorted(self.words, key=self.score.get, reverse=True)
+        print(sorted_noGreen)
 
-        for word in sorted_noGreen:
+
+        for word in sorted_noGreen:     # sorted_noGreen scored with original letter scoring:
             rtn += word + " " + str(self.score[word]) + '\n'
             # print(word, self.score[word])
         rtn += '\n'
@@ -489,7 +498,7 @@ class Criteria:
             hitlist = singlelettercrit["hit"]
             if len(hitlist) != 0:
                 # letter is green
-                self.greenletters.append(letterkey)
+                self.greenletters.append(letterkey.lower())
                 print("###>> ",self.greenletters)
 
 

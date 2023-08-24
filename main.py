@@ -11,10 +11,10 @@ cols=5
 
 notaindex = 0
 
-wordfile_20k = "fiveletter_20k_trimmed.txt"
-# wordfile_20k = "fiveletter_test.txt"
-wordfile_71k = "fiveletter_71k.txt"
-# wordfile_71k = "fiveletter_test.txt"
+# wordfile_20k = "fiveletter_20k_trimmed.txt"
+wordfile_20k = "fiveletter_test.txt"
+# wordfile_71k = "fiveletter_71k.txt"
+wordfile_71k = "fiveletter_test.txt"
 
 wordfile_not = "fiveletter_notaword.txt"
 
@@ -111,7 +111,7 @@ def press_notawrite():
 
 def keydown(e):
     global currentcol, currentrow
-    print(">>>EVENT<<< keydown: current(",currentrow,',',currentcol,')',e.char)
+    # print(">>>EVENT<<< keydown: current(",currentrow,',',currentcol,')',e.char)
 
 def keyup(e):
     global currentcol, currentrow
@@ -140,7 +140,7 @@ def keyup(e):
 
 def nextcell():
     # increment to next cell
-    print("NEXT CELL")
+    # print("NEXT CELL")
     global currentcol, currentrow
     btn[currentrow][currentcol].config(bg="black")
     if currentcol < cols - 1:
@@ -152,7 +152,7 @@ def nextcell():
         else:    # last row
             currentcol = cols - 1
     btn[currentrow][currentcol].config(bg="grey")
-    print("   new cell(", currentrow, ',', currentcol, ')')
+    # print("   new cell(", currentrow, ',', currentcol, ')')
 
 def backspace(e):
     # Note after this routine, the default keyrelease(keyup) will run
@@ -165,7 +165,7 @@ def backspace(e):
         currentrow -= 1
         currentcol = cols - 1
     btn[currentrow][currentcol].config(bg="grey")
-    print("   backspace: new current(",currentrow,',',currentcol,')')
+    # print("   backspace: new current(",currentrow,',',currentcol,')')
 
 def focus(event):
     widget = ws.focus_get()
@@ -180,7 +180,7 @@ def scancells():
             color += cell[rindex][cindex].color
         word += "<<<"
         color += "<<<"
-        print("   ",currentrow, currentcol, rindex, cindex, word, color)
+        # print("   ",currentrow, currentcol, rindex, cindex, word, color)
 
 
 
@@ -193,21 +193,7 @@ def updateresults():
     # crit.printrowlist()
     crit.makecriteria()
     crit.mergecriteria()
-
     crit.printcriteria()
-
-    # create elimination word criteria
-    # elimGcrit.elimGcriteria(crit.mergecrit)
-    # noColorcrit.noColorcriteria(crit.mergecrit)
-
-    # crit.printrowlist()
-    # noColorcrit.printrowlist()
-
-    '''
-    crit.printcriteria()
-    elimGcrit.printcriteria()
-    noColorcrit.printcriteria()
-    '''
 
     # APPLY SEARCH CRITERIA TO WORDLISTS
     wr20k.criteriaresults(w20k.words, crit.mergecrit, cols)
@@ -227,18 +213,7 @@ def updateresults():
     # find all green letters in crit, put in self.greenletters list
     crit.greenletter()
 
-    wAll.scorewords_noG(crit.greenletters, cols)
-
-
-
-
-    # APPLY ELIMINATION CRITERIA TO REMAINING WORDS
-    # print("Elim G criteria:", elimGcrit)
-    # wr20kG.criteriaresults(wr20k.words, elimGcrit.mergecrit, cols)
-    # textelimG = wr20kG.formatwords(16, 64)
-
-    # wr20kGY.criteriaresults(wr20k.words, noColorcrit.mergecrit, cols)
-    # textnoColor = wr20kGY.formatwords(16, 64)
+    wAll.words = w20k.wordsmerge(w71k.words)
 
 
     # DISPLAY RESULTS
@@ -257,8 +232,8 @@ def updateresults():
     textAllscore = wrAll.wordscore(cols)
     side2label.config(text=textAllscore)
 
-    textNoGreenscore = wAll.scorewords_noG(crit.greenletters, cols)
-    side2label.config(text=textNoGreenscore)
+    textNoGreenscore = wAll.scorewords_noG(crit.greenletters, wrAll, cols)
+    side3label.config(text=textNoGreenscore)
 
     # textelimG = wr20k.elimGscore(wr20k, cols)
     # side4label.config(text=textelimG)
