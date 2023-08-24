@@ -176,11 +176,7 @@ class Wordlist:
                     uniqueletter.add(letter)
                     pass
 
-        print(self.score)
-
         sorted_noGreen = sorted(self.words, key=self.score.get, reverse=True)
-        print(sorted_noGreen)
-
 
         for word in sorted_noGreen:     # sorted_noGreen scored with original letter scoring:
             rtn += word + " " + str(self.score[word]) + '\n'
@@ -501,8 +497,6 @@ class Criteria:
             if len(hitlist) != 0:
                 # letter is green
                 self.greenletters.append(letterkey.lower())
-                print("###>> ",self.greenletters)
-
 
 
     def elimGcriteria(self, criteria):
