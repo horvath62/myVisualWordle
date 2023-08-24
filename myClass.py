@@ -160,18 +160,22 @@ class Wordlist:
         rtn = 'NO GREEN SCORE:\n'
         self.score = {}
 
+
         print(scoredwordlist.score)
 
         for word in self.words:
             self.score[word] = 0
+            uniqueletter = set()
             # print(word," ",end="")
             for loc in range(cols):
                 letter = word[loc]
+
                 print("###",letter, greenlist)
-                if letter in greenlist:
+                if (letter in greenlist) or (letter in uniqueletter):
                     pass
                 else:
                     self.score[word] += scoredwordlist.letterstat[letter]
+                    uniqueletter.add(letter)
                     pass
 
         print(self.score)

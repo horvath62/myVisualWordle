@@ -11,10 +11,14 @@ cols=5
 
 notaindex = 0
 
-# wordfile_20k = "fiveletter_20k_trimmed.txt"
-wordfile_20k = "fiveletter_test.txt"
-# wordfile_71k = "fiveletter_71k.txt"
-wordfile_71k = "fiveletter_test.txt"
+debug = True
+
+if debug:
+    wordfile_20k = "fiveletter_test.txt"
+    wordfile_71k = "fiveletter_test.txt"
+else:
+    wordfile_71k = "fiveletter_71k.txt"
+    wordfile_20k = "fiveletter_20k_trimmed.txt"
 
 wordfile_not = "fiveletter_notaword.txt"
 
