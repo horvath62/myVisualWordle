@@ -157,11 +157,8 @@ class Wordlist:
 
     def scorewords_noG(self, greenlist, scoredwordlist, cols):
         # Uses the self score, but apply to another wordlist (all the words)
-        rtn = 'NO GREEN SCORE:\n'
+        rtn = 'ELIMINATION:\n'
         self.score = {}
-
-
-        print(scoredwordlist.score)
 
         for word in self.words:
             self.score[word] = 0
@@ -182,30 +179,6 @@ class Wordlist:
             rtn += word + " " + str(self.score[word]) + '\n'
             # print(word, self.score[word])
         rtn += '\n'
-        return rtn
-
-
-    def elimGscore(self, wordscore, cols):
-        rtn = 'ELIM GREEN:\n'
-        self.elimG = {}
-        for word in self.words:
-            self.elimG[word] = 0
-            for letter in word:
-                self.elimG[word] += wordscore.letterstat[letter]
-
-        sorted_noGreen = sorted(self.elimG, key=self.elimG.get, reverse=True)
-
-        for wordkey in sorted_noGreen:
-            rtn += wordkey + " " + str(self.elimG[wordkey]) + '\n'
-            # print(word, self.score[word])
-        rtn += '\n'
-        return rtn
-
-        print(self.elimG)
-
-    def noColorscore(self, wordscore, cols):
-        rtn ='ELIM G:/n'
-        self.noColor = {}
         return rtn
 
 
@@ -498,34 +471,6 @@ class Criteria:
                 # letter is green
                 self.greenletters.append(letterkey.lower())
 
-
-    def elimGcriteria(self, criteria):
-        self.mergecrit = {}
-        # a:[hit:[1],miss:[3],total:2,exact:N}
-        # b:.....
-        # change all Green Letters to Black
-        for letterkey in criteria:
-            letterdict = copy.deepcopy(criteria[letterkey])
-            hitlist = letterdict["hit"]
-            letterdict['hit']=[]
-            # letterdict['tot'] # no change
-            letterdict['miss'] = letterdict['miss'] + hitlist
-            self.mergecrit[letterkey]=letterdict
-
-
-    # ##### WIP ######
-    def noColorcriteria(self, criteria):
-        self.mergecrit = {}
-        # make criteria eliminating all yellow and black
-        for letterkey in criteria:
-            letterdict = copy.deepcopy(criteria[letterkey])
-            hitlist = letterdict["hit"]
-            misslist = letterdict['miss']
-            letterdict['hit'] = []
-            letterdict['tot'] = 0
-            letterdict['miss'] = []
-            self.mergecrit[letterkey] = letterdict
-    # ######## WIP ###########
 
 
     def printcriteria(self):
